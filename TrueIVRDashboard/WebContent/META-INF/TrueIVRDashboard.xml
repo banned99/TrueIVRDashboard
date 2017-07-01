@@ -1,0 +1,14 @@
+<Context path="/TrueIVRDashboard" reloadable="true" docBase="/Users/caliver/Documents/TrueIVRDashboard/TrueIVRDashboard/WebContent"  >
+	<Resource
+		name="jdbc/dashboard"
+		type="javax.sql.DataSource"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://localhost:3306/trueproject"
+		username="root"
+		password="banned"
+		maxIdle="1"
+		maxWait="-1"
+		maxActive="5"
+		removeAbandoned="true"
+		removeAbandonedTimeout="60"/>
+</Context>
