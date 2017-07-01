@@ -5,7 +5,7 @@
   - Implement features from old dashboard web and develop new webapp
   
   - List of Features
-    - For user who have a permission to monitor End-User Requirement in Truecorp
+    - For user who have a permission to monitor End-User Requirement in True Corporation Pub Co., Ltd
 
     - Monitoring
       - All projects in True User Requirement database (True UR)
