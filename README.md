@@ -2,14 +2,17 @@
   - True Academy Project Internship Period 6/2017 - 7/2017
   - For Truecorp's IVR Telephony Support Team
   - This is a "BETA" Version
-  - Implement features from old dashboard web and develop new webapp
+  - Implement features from old dashboard web and develop new web-app
   
   - List of Features
     - For user who have a permission to monitor End-User Requirement in True Corporation Pub Co., Ltd
+    
+    - Authenication
+      - Users can log in and log out by using "Current" user-lan account
 
-    - Monitoring
+    - Tracking & Monitoring
       - All projects in True User Requirement database (True UR)
-      - Top 10 priority projects (Closest dead-line based on priority HIGH = 5 days, Med = 3 days, Low = 1 days)
+      - Show top 10 priority projects and alert (Closest dead-line based on priority HIGH = 5 days, Med = 3 days, Low = 1 days)
       - List all access channels (Type of request) and contact line number
       - Search by Filter (all field in tables except file)
 
