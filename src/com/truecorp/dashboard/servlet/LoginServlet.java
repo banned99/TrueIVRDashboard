@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.truecorp.dashboard.model.Authorize;
 import com.truecorp.dashboard.service.LoginService;
@@ -40,6 +41,23 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		doProcess(request, response);
+	}
+	
+	protected void doProcess(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String action = request.getParameter("action");
+		switch (action){
+			case "login":
+				doLogin(request, response);
+				break;
+			case "logout":
+				doLogout(request, response);
+				break;
+		}
+	}
+
+	private void doLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 
@@ -50,9 +68,10 @@ public class LoginServlet extends HttpServlet {
 			auth = loginService.doLogin(username, password);
 
 			if (auth != null) {
+				HttpSession session = request.getSession();
+				session.setAttribute("user", auth);
 				request.setAttribute("msg", Messages.LOGIN_SUCCESSFUL);
-				request.setAttribute("user", auth);
-				request.getRequestDispatcher("pages/home.jsp").forward(request, response);
+				request.getRequestDispatcher("HomeServlet?action=view").forward(request, response);
 			} else {
 				request.setAttribute("msg", Messages.LOGIN_FAILURE);
 				request.getRequestDispatcher("pages/login.jsp").forward(request, response);
@@ -61,7 +80,19 @@ public class LoginServlet extends HttpServlet {
 			request.setAttribute("msg", Messages.INTERNAL_SERVER_ERROR);
 			request.getRequestDispatcher("pages/login.jsp").forward(request, response);
 		}
+	}
+	
+	private void doLogout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		HttpSession session = request.getSession();
+		Authorize auth = (Authorize) session.getAttribute("user");
+		
+		if (auth != null){
+//			insert log
+		}
+		
+		session.invalidate();
+		request.getRequestDispatcher("pages/login.jsp").forward(request, response);
 	}
 
 }

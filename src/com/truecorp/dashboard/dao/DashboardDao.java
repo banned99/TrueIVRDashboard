@@ -18,14 +18,18 @@ public class DashboardDao {
 	private static PreparedStatement pstmt;
 	private static ResultSet rs;
 
+	//TESTED
 	public static List<Project> getRecentProject(int perPage, int page) throws SQLException {
-		String sql = "SELECT project_id, project_name, " + "project_status, project_ac, "
-				+ "project_target_date, project_launch_date, " + "project_file FROM Project WHERE ROWNUM >="
-				+ (perPage * (page - 1)) + "AND ROWNUM <=" + (perPage * (page)) + ";";
+		final int startRow = ((page - 1) * 20);
+		final int endRow = (page * 20);
+		String sql = "select * from Project order by project_id DESC LIMIT ?,?;";
 		try {
 			conn = DBUtil.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
+			
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
 
 			List<Project> projectList = new ArrayList<Project>();
 			if (rs != null) {
@@ -35,10 +39,11 @@ public class DashboardDao {
 					project = new Project();
 					project.setProjectId(rs.getInt("project_id"));
 					project.setProjectName(rs.getString("project_name"));
+					project.setProjectStatus(rs.getString("project_status"));
 					project.setProjectAccessChannel(rs.getString("project_ac"));
 					project.setProjectPriority(rs.getString("project_priority"));
-					project.setProjectTargetDate(
-							new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("project_target_date")));
+					project.setProjectStartDate(
+							new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("project_start_date")));
 					project.setProjectTargetDate(
 							new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("project_target_date")));
 					project.setProjectLaunchDate(
@@ -58,6 +63,7 @@ public class DashboardDao {
 		return null;
 	}
 
+	//Waiting for test
 	public static List<Project> projectSearch(ProjectCriteria cri) throws SQLException {
 
 		List<Project> resultList = new ArrayList<Project>();
@@ -139,6 +145,7 @@ public class DashboardDao {
 		return resultList;
 	}
 
+	//Waiting for test
 	public static List<Project> projectSearch(ProjectCriteria cri, int page) throws SQLException {
 		final int startRow = (((page - 1) * 20) + 1);
 		final int endRow = (page * 20);
@@ -224,8 +231,9 @@ public class DashboardDao {
 		return resultList;
 	}
 	
+	//Testing
 	public static List<Project> getPriorityProject() throws SQLException {
-		String sql = "SELECT * FROM Project WHERE project_target_date - CURDATE() <= 5";
+		String sql = "SELECT * FROM Project WHERE project_target_date - CURDATE() > 0 AND project_target_date - CURDATE() <= 5";
 		
 		try {
 			conn = DBUtil.getConnection();
@@ -240,6 +248,7 @@ public class DashboardDao {
 					project = new Project();
 					project.setProjectId(rs.getInt("project_id"));
 					project.setProjectName(rs.getString("project_name"));
+					project.setProjectStatus(rs.getString("project_status"));
 					project.setProjectAccessChannel(rs.getString("project_ac"));
 					project.setProjectPriority(rs.getString("project_priority"));
 					project.setProjectStartDate(

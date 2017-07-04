@@ -156,13 +156,11 @@ public class DashboardServlet extends HttpServlet {
 
 	private void viewAllProject(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		try {
-			JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
-			
 			DashboardService dashService = new DashboardService();
 			List<Project> projects = new ArrayList<Project>();
 			
-			int perPage = data.get("perPage").getAsInt();
-			int pageNo = data.get("pageNo").getAsInt();
+			int perPage = Integer.parseInt(request.getParameter("perPage"));
+			int pageNo = Integer.parseInt(request.getParameter("pageNo"));
 			projects = dashService.getAllProj(perPage, pageNo);
 			
 			Gson gson = new Gson();
@@ -172,7 +170,6 @@ public class DashboardServlet extends HttpServlet {
             response.setContentType("application/json; charset=utf-8");
             response.getWriter().print(jsonArray);
 		} catch (JsonSyntaxException | JsonIOException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 	}
