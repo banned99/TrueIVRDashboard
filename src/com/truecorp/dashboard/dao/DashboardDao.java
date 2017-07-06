@@ -312,4 +312,185 @@ public class DashboardDao {
 		}
 		return null;
 	}
+
+	public static int getTotalProject() throws SQLException {
+		String sql = "SELECT COUNT(*) as total FROM Project";
+		int result = 0;
+		try{
+			conn = DBUtil.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()){
+				result = rs.getInt("total");
+			}
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			rs.close();
+			pstmt.close();
+			conn.close();
+		}
+		return result;
+	}
+	
+	public static int getTotalProjectYear() throws SQLException {
+		String sql = "SELECT COUNT(*) as total FROM Project WHERE YEAR(project_start_date) = YEAR(CURDATE())";
+		int result = 0;
+		try{
+			conn = DBUtil.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()){
+				result = rs.getInt("total");
+			}
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			rs.close();
+			pstmt.close();
+			conn.close();
+		}
+		return result;
+	}
+	
+	public static int getTotalProjectMonth() throws SQLException {
+		String sql = "SELECT COUNT(*) as total FROM Project WHERE MONTH(project_start_date) = MONTH(CURDATE())";
+		int result = 0;
+		try{
+			conn = DBUtil.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()){
+				result = rs.getInt("total");
+			}
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			rs.close();
+			pstmt.close();
+			conn.close();
+		}
+		return result;
+	}
+	
+	public static int getTotalProjectOpening() throws SQLException {
+		String sql = "SELECT COUNT(*) as total FROM Project WHERE project_status NOT IN ('cancelled', 'closed')";
+		int result = 0;
+		try{
+			conn = DBUtil.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()){
+				result = rs.getInt("total");
+			}
+			
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			rs.close();
+			pstmt.close();
+			conn.close();
+		}
+		return result;
+	}
+	
+	public static int getTotalProjectFinished() throws SQLException {
+		String sql = "SELECT COUNT(*) as total FROM Project WHERE project_status = 'closed'";
+		int result = 0;
+		try{
+			conn = DBUtil.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()){
+				result = rs.getInt("total");
+			}
+			
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			rs.close();
+			pstmt.close();
+			conn.close();
+		}
+		return result;
+	}
+	
+	public static int getTotalProjectCancelled() throws SQLException {
+		String sql = "SELECT COUNT(*) as total FROM Project WHERE project_status = 'cancelled'";
+		int result = 0;
+		try{
+			conn = DBUtil.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()){
+				result = rs.getInt("total");
+			}
+			
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			rs.close();
+			pstmt.close();
+			conn.close();
+		}
+		return result;
+	}
+	
+	public static int getTotalProjectOnTime() throws SQLException {
+		String sql = "SELECT distinct * from Project where DATEDIFF('2017-08-01', project_target_date) <= 0 order by project_id";
+		int result = 0;
+		try{
+			conn = DBUtil.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()){
+				result = rs.getInt("total");
+			}
+			
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			rs.close();
+			pstmt.close();
+			conn.close();
+		}
+		return result;
+	}
+	
+	public static int getTotalProjectLate() throws SQLException {
+		String sql = "SELECT distinct * from Project where DATEDIFF('2017-08-01', project_target_date) > 0 order by project_id";
+		int result = 0;
+		try{
+			conn = DBUtil.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()){
+				result = rs.getInt("total");
+			}
+			
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			rs.close();
+			pstmt.close();
+			conn.close();
+		}
+		return result;
+	}
 }

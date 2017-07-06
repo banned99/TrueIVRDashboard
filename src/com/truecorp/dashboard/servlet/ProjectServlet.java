@@ -24,13 +24,13 @@ import com.truecorp.dashboard.service.DashboardService;
 /**
  * Servlet implementation class DashboardServlet
  */
-public class DashboardServlet extends HttpServlet {
+public class ProjectServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DashboardServlet() {
+    public ProjectServlet() {
         super();
     }
 
@@ -38,7 +38,7 @@ public class DashboardServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doProcess(request, response);
+		request.getRequestDispatcher("pages/project.jsp").forward(request, response);
 	}
 
 	/**
@@ -55,12 +55,6 @@ public class DashboardServlet extends HttpServlet {
 			switch (action) {
 			case "viewAllProject":
 				viewAllProject(request, response);
-				break;
-			case "viewMostPrioProject":
-				viewMostPriority(request, response);
-				break;
-			case "viewMostRecentProject":
-				viewMostRecent(request, response);
 				break;
 			case "projectSearch":
 				searchProject(request, response);
@@ -116,43 +110,6 @@ public class DashboardServlet extends HttpServlet {
 		
 	}
 
-	private void viewMostRecent(HttpServletRequest request, HttpServletResponse response) throws SQLException {
-		try {
-			DashboardService dashService = new DashboardService();
-			List<Project> projects = new ArrayList<Project>();
-			
-			projects = dashService.get5RecentProject();
-			
-			Gson gson = new Gson();
-            JsonElement element = gson.toJsonTree(projects, new TypeToken<List<Project>>(){}.getType());
-            JsonArray jsonArray = element.getAsJsonArray();
-            
-            response.setContentType("application/json; charset=utf-8");
-            response.getWriter().print(jsonArray);
-		} catch (JsonSyntaxException | JsonIOException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	private void viewMostPriority(HttpServletRequest request, HttpServletResponse response) throws SQLException {
-		try {
-			DashboardService dashService = new DashboardService();
-			List<Project> projects = new ArrayList<Project>();
-			
-			projects = dashService.getPriorityProj();
-			
-			Gson gson = new Gson();
-            JsonElement element = gson.toJsonTree(projects, new TypeToken<List<Project>>(){}.getType());
-            JsonArray jsonArray = element.getAsJsonArray();
-            
-            response.setContentType("application/json; charset=utf-8");
-            response.getWriter().print(jsonArray);
-		} catch (JsonSyntaxException | JsonIOException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	private void viewAllProject(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		try {

@@ -17,7 +17,6 @@ public class LoginDao {
 
 	public static Authorize userLogin(String username, String password) throws SQLException {
 		String sql = "SELECT * FROM Authorize WHERE username=? and password=? LIMIT 1";
-
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);

@@ -3,45 +3,65 @@
 <%@include file="session.jsp"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
 <html>
 <head>
 
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<title>Home</title>
-
-<!-- Bootstrap Core CSS -->
-<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-
-<!-- MetisMenu CSS -->
-<link href="css/metisMenu.min.css" rel="stylesheet" type="text/css">
-
-<!-- DataTables CSS -->
-<link href="css/dataTables.bootstrap.css" rel="stylesheet"
-	type="text/css">
-
-<!-- DataTables Responsive CSS -->
-<link href="css/dataTables.responsive.css" rel="stylesheet"
-	type="text/css">
-
-<!-- Custom CSS -->
-<link href="css/sb-admin-2.css" rel="stylesheet" type="text/css">
-
-<!-- Custom Fonts -->
-<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-
-<!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
+	<title>Home</title>
+	
+	<!-- Bootstrap Core CSS -->
+	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	
+	<!-- MetisMenu CSS -->
+	<link href="css/metisMenu.min.css" rel="stylesheet" type="text/css">
+	
+	<!-- DataTables CSS -->
+	<link href="css/dataTables.bootstrap.css" rel="stylesheet"
+		type="text/css">
+	
+	<!-- DataTables Responsive CSS -->
+	<link href="css/dataTables.responsive.css" rel="stylesheet"
+		type="text/css">
+	
+	<!-- Custom CSS -->
+	<link href="css/sb-admin-2.css" rel="stylesheet" type="text/css">
+	
+	<!-- Custom Fonts -->
+	<!-- <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+	
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="js/homeAjax.js" type="text/javascript"></script>
+	<script src="js/bootstrap.min.js"></script>
+	
+	<!-- Metis Menu Plugin JavaScript -->
+	<script src="js/metisMenu.min.js"></script>
+	
+	<!-- DataTables JavaScript -->
+	<script src="js/jquery.dataTables.min.js"></script>
+	<script src="js/dataTables.bootstrap.min.js"></script>
+	<script src="js/dataTables.responsive.js"></script>
+	
+	<!-- Custom Theme JavaScript -->
+	<script src="js/sb-admin-2.js"></script>
+	
+	<script>
+		$(document).ready(function() {
+			$('#dataTables-example').DataTable({
+				responsive : true
+			});
+		});
+	</script>
+	
+	<!--[if lt IE 9]>
+	        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
 </head>
 <body>
 	<div id="wrapper" class="in">
 
 		<!-- Navigation TOP -->
-		<%@include file="__header.jsp" %>
+		<%@include file="__header.jsp"%>
 
 		<div id="page-wrapper" style="min-height: 537px; margin-top: 30px;">
 			<div class="row">
@@ -55,7 +75,7 @@
 				<div class="col-sm-12">
 					<table width="100%"
 						class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline"
-						id="dataTables-example" role="grid"
+						id="top" role="grid"
 						aria-describedby="dataTables-example_info" style="width: 100%;">
 						<thead>
 							<tr role="row">
@@ -226,44 +246,7 @@
 			<div class="row"></div>
 		</div>
 		<!-- /.table-responsive -->
-
+		<div id="mostprio"></div>
 	</div>
-	<!-- /.panel-body -->
-
-
-	<!-- /.panel -->
-
-	<!-- /.col-lg-12 -->
-
-	<!-- /#page-wrapper -->
-
-
-	<!-- /#wrapper -->
-
-	<!-- jQuery -->
-	<script src="js/jquery.min.js"></script>
-
-	<!-- Bootstrap Core JavaScript -->
-	<script src="js/bootstrap.min.js"></script>
-
-	<!-- Metis Menu Plugin JavaScript -->
-	<script src="js/metisMenu.min.js"></script>
-
-	<!-- DataTables JavaScript -->
-	<script src="js/jquery.dataTables.min.js"></script>
-	<script src="js/dataTables.bootstrap.min.js"></script>
-	<script src="js/dataTables.responsive.js"></script>
-
-	<!-- Custom Theme JavaScript -->
-	<script src="js/sb-admin-2.js"></script>
-
-	<!-- Page-Level Demo Scripts - Tables - Use for reference -->
-	<script>
-		$(document).ready(function() {
-			$('#dataTables-example').DataTable({
-				responsive : true
-			});
-		});
-	</script>
 </body>
 </html>

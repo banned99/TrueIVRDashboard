@@ -4,17 +4,12 @@
 $(document).ready(function() {
 	$.ajax({
 		"type" : "GET",
-		"url" : "DashboardServlet",
+		"url" : "ProjectServlet",
 		"contentType" : "application/json",
 		"data" : {
-//			"action" : "viewMostRecentProject"
-			
 			"action" : "viewAllProject",
 			"perPage" : "20",
 			"pageNo" : "1"
-			
-//			"action" : "viewMostPrioProject"
-			
 		}
 	}).then(function(data, status, jqxhr){
 		$.each(data, function( index, value ){
