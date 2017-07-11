@@ -7,7 +7,6 @@
 <!-- CSS -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="css/custom_style">
 
 </head>
 <body>
@@ -15,8 +14,12 @@
 		role="navigation" style="margin-bottom: 0">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="HomeServlet?action=view">
-				True IVR Dashboard</a>
+				<% 
+				if(session.getAttribute("user") != null) 
+					out.print("<a class='navbar-brand' href='HomeServlet?action=view'> True IVR Dashboard </a>");
+				else
+					out.print("<p class='navbar-brand'> True IVR Dashboard </a>");
+				%>
 			</div>
 		</div>
 	</nav>

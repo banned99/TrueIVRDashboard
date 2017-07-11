@@ -72,7 +72,7 @@ public class LoginServlet extends HttpServlet {
 				HttpSession session = request.getSession();
 				session.setAttribute("user", auth);
 				request.setAttribute("msg", Messages.LOGIN_SUCCESSFUL);
-				request.getRequestDispatcher("HomeServlet").forward(request, response);
+				request.getRequestDispatcher("HomeServlet?action=view").forward(request, response);
 			} else {
 				request.setAttribute("msg", Messages.LOGIN_FAILURE);
 				doGet(request, response);
@@ -88,11 +88,11 @@ public class LoginServlet extends HttpServlet {
 
 		HttpSession session = request.getSession();
 		Authorize auth = (Authorize) session.getAttribute("user");
-
+		System.out.println(auth.getUserFullname());
 		if (auth != null) {
 			// insert log
 		}
-
+		session.removeAttribute("user");
 		session.invalidate();
 		doGet(request, response);
 	}

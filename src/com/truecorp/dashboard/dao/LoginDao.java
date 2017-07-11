@@ -11,11 +11,10 @@ import com.truecorp.dashboard.model.Authorize;
 
 public class LoginDao {
 
-	private static Connection conn;
-	private static PreparedStatement pstmt;
-	private static ResultSet rs;
-
 	public static Authorize userLogin(String username, String password) throws SQLException {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		String sql = "SELECT * FROM Authorize WHERE username=? and password=? LIMIT 1";
 		try {
 			conn = getConnection();
@@ -53,8 +52,7 @@ public class LoginDao {
 	}
 
 	private static Connection getConnection() throws SQLException {
-		conn = DBUtil.getConnection();
-//		conn = DBUtil.getConnectionbyContext();
+		Connection conn = DBUtil.getConnection();
 		return conn;
 	}
 

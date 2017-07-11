@@ -3,7 +3,9 @@ package com.truecorp.dashboard.servlet;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -36,18 +38,13 @@ public class HomeServlet<E> extends HttpServlet {
 	}
 
 	/**
+	 * @throws IOException 
+	 * @throws ServletException 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		try {
-			doProcess(request, response);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doProcess(request, response);
 	}
 
 	/**
@@ -56,29 +53,29 @@ public class HomeServlet<E> extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		try {
-			doProcess(request, response);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		doProcess(request, response);
 	}
 
-	private void doProcess(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
-
+	private void doProcess(HttpServletRequest request, HttpServletResponse response) {
 		String action = request.getParameter("action");
-		switch (action) {
-		case "viewMostPrioProject":
-			viewMostPriority(request, response);
-			break;
-		case "viewMostRecentProject":
-			viewMostRecent(request, response);
-			break;
-		case "viewStatistics":
-			viewStat(request, response);
-			break;
-		default: request.getRequestDispatcher("pages/home.jsp").forward(request, response);
+		try {
+			switch (action) {
+			case "viewMostPrioProject":
+				viewMostPriority(request, response);
+				break;
+			case "viewMostRecentProject":
+				viewMostRecent(request, response);
+				break;
+			case "viewStatistics":
+				viewStat(request, response);
+				break;
+			case "view":
+				request.getRequestDispatcher("pages/home.jsp").forward(request, response);
+				break;
+			}
+		} catch (SQLException | IOException | ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -93,22 +90,18 @@ public class HomeServlet<E> extends HttpServlet {
 		int total_project_cancelled = ds.getTotalCancelled();
 		int total_project_on_time = ds.getTotalOnTimeProject();
 		int total_project_late = ds.getTotalLateProject();
-
-		List<Integer> stats = new ArrayList<Integer>();
-		stats.add(total_projects);
-		stats.add(total_in_year);
-		stats.add(total_in_month);
-		stats.add(total_project_opened);
-		stats.add(total_project_finished);
-		stats.add(total_project_cancelled);
-		stats.add(total_project_on_time);
-		stats.add(total_project_late);
 		
-		Gson gson = new Gson();
-		JsonElement element = gson.toJsonTree(stats, new TypeToken<Integer>() {}.getType());
-		JsonArray jsonArray = element.getAsJsonArray();
-		response.setContentType("application/json; charset=utf-8");
-		response.getWriter().print(jsonArray);
+		Map<String, Integer> stats = new HashMap<String, Integer>();
+		stats.put("total_projects", total_projects);
+		stats.put("total_in_year", total_in_year);
+		stats.put("total_in_month", total_in_month);
+		stats.put("total_project_opened", total_project_opened);
+		stats.put("total_project_finished", total_project_finished);
+		stats.put("total_project_cancelled", total_project_cancelled);
+		stats.put("total_project_on_time", total_project_on_time);
+		stats.put("total_project_late", total_project_late);
+		
+		new Gson().toJson(stats, response.getWriter());
 	}
 
 	private void viewMostPriority(HttpServletRequest request, HttpServletResponse response) throws SQLException {
@@ -121,7 +114,7 @@ public class HomeServlet<E> extends HttpServlet {
 			Gson gson = new Gson();
 			JsonElement element = gson.toJsonTree(projects, new TypeToken<List<Project>>() {}.getType());
 			JsonArray jsonArray = element.getAsJsonArray();
-
+			
 			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().print(jsonArray);
 		} catch (JsonSyntaxException | JsonIOException | IOException e) {

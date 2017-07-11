@@ -2,19 +2,20 @@ package com.truecorp.dashboard.criteria;
 
 public class ProjectCriteria {
 
-	private int projectId;
+	private String projectId;
 	private String projectName;
 	private String projectStatus;
 	private String projectAccessChannel;
 	private String projectPriority;
+	private String projectStartDate;
 	private String projectTargetDate;
 	private String projectLaunchDate;
 	
-	public int getProjectId() {
+	public String getProjectId() {
 		return projectId;
 	}
-	public void setProjectId(int projectId) {
-		this.projectId = projectId;
+	public void setProjectId(String projectId2) {
+		this.projectId = projectId2;
 	}
 	public String getProjectName() {
 		return projectName;
@@ -51,6 +52,14 @@ public class ProjectCriteria {
 	}
 	public void setProjectLaunchDate(String projectLaunchDate) {
 		this.projectLaunchDate = projectLaunchDate;
+	}
+	
+	public void setProjectStartDate(String projectStartDate){
+		this.projectStartDate = projectStartDate;
+	}
+	
+	public String getProjectStartDate() {
+		return projectStartDate;
 	}
 	
 }

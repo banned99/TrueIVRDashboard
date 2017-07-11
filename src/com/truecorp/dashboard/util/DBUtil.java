@@ -2,17 +2,11 @@
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
 
 public class DBUtil {
 
-	private static String msg = "Can't Connected Database";
-	private static String username = "caliver";
-	private static String password = "";
+	private static String username = "root";
+	private static String password = "banned00";
 	private static String hostname = "jdbc:mysql://localhost:3306/trueproject?useSSL=false";
 
 //  temp
@@ -59,36 +53,6 @@ public class DBUtil {
 
 	public static void setPassword(String password) {
 		DBUtil.password = password;
-	}
-//	end temp
-	private static Connection init(String s) {
-		Connection conn = null;
-		try {
-			// Connection by JNDI
-			InitialContext initContext = new InitialContext();
-			Context context = (Context) initContext.lookup("java:/comp/env");
-			DataSource dataSource = (DataSource) context.lookup(s);
-			if (dataSource != null) {
-				conn = dataSource.getConnection();
-				conn.setAutoCommit(false);
-				msg = "Connextion: " + conn;
-			} else {
-				msg = "Error: No DataSource";
-			}
-
-		} catch (Exception e) {
-			msg = e.getMessage();
-		}
-		return conn;
-	}
-
-	public static Connection getConnectionbyContext() throws SQLException {
-		Connection conn = init("jdbc/dashboard");
-		if (conn == null) {
-			throw new SQLException(msg);
-		} else {
-			return conn;
-		}
 	}
 
 }

@@ -21,13 +21,13 @@
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>DashboardServlet</display-name>
-    <servlet-name>DashboardServlet</servlet-name>
-    <servlet-class>com.truecorp.dashboard.servlet.DashboardServlet</servlet-class>
+    <display-name>ProjectServlet</display-name>
+    <servlet-name>ProjectServlet</servlet-name>
+    <servlet-class>com.truecorp.dashboard.servlet.ProjectServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>DashboardServlet</servlet-name>
-    <url-pattern>/DashboardServlet</url-pattern>
+    <servlet-name>ProjectServlet</servlet-name>
+    <url-pattern>/ProjectServlet</url-pattern>
   </servlet-mapping>
   <resource-ref>
     <description>DB Connection</description>
@@ -44,5 +44,15 @@
   <servlet-mapping>
     <servlet-name>HomeServlet</servlet-name>
     <url-pattern>/HomeServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>AccessChannelServlet</display-name>
+    <servlet-name>AccessChannelServlet</servlet-name>
+    <servlet-class>com.truecorp.dashboard.servlet.AccessChannelServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AccessChannelServlet</servlet-name>
+    <url-pattern>/AccessChannelServlet</url-pattern>
   </servlet-mapping>
 </web-app>

@@ -17,13 +17,8 @@ public class DashboardService {
 	}
 	
 	//Developing in process & NOT TESTED
-	public List<Project> projectSearch(ProjectCriteria crit) throws SQLException{
-		return DashboardDao.projectSearch(crit);
-	}
-	
-	//Developing in process & NOT TESTED
-	public List<Project> projectSearch(ProjectCriteria crit, int page) throws SQLException{
-		return DashboardDao.projectSearch(crit, page);
+	public List<Project> projectSearch(ProjectCriteria crit, int pageNo, int perPage) throws SQLException{
+		return DashboardDao.projectSearch(crit, pageNo, perPage);
 	}
 	
 	public List<Project> get5RecentProject() throws SQLException {

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" href="css/custom_style">
+<!-- <link rel="stylesheet" href="css/custom_style.css"> -->
 <title>True IVR Dashboard</title>
 </head>
 <body>
