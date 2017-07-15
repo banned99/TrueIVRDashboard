@@ -30,7 +30,6 @@ public class AccessChannelServlet extends HttpServlet {
      */
     public AccessChannelServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -40,7 +39,6 @@ public class AccessChannelServlet extends HttpServlet {
 		try {
 			doProcess(request, response);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -52,7 +50,6 @@ public class AccessChannelServlet extends HttpServlet {
 		try {
 			doProcess(request, response);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -69,7 +66,7 @@ public class AccessChannelServlet extends HttpServlet {
 		case "getTotal":
 			getTotalAC(request, response);
 			break;
-		case "searchAC":
+		case "acSearch":
 			searchAC(request, response);
 			break;
 		}
@@ -123,5 +120,7 @@ public class AccessChannelServlet extends HttpServlet {
         response.setContentType("application/json; charset=utf-8");
         response.getWriter().print(jsonArray);
 	}
+	
+	
 
 }

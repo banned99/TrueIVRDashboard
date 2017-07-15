@@ -6,12 +6,22 @@ public class Project {
 
 	private int projectId;
 	private String projectName;
+	private String projectOwner;
 	private String projectStatus;
-	private String projectAccessChannel;
 	private String projectPriority;
-	private String projectStartDate;
+	private String projectRequestDate;
+	private String projectRequestSubmitDate;
 	private String projectTargetDate;
+	private String projectReason;
 	private String projectLaunchDate;
+	private String projectUcrNo;
+	private String projectUcrDate;
+	private String projectRequester;
+	private String projectAccessChannel;
+	private String projectManday;
+	private String projectDetails;
+	private String projectLastComment;
+	private String projectUserlan;
 	private Blob projectFile;
 
 	public int getProjectId() {
@@ -54,14 +64,6 @@ public class Project {
 		this.projectPriority = projectPriority;
 	}
 
-	public String getProjectStartDate() {
-		return projectStartDate;
-	}
-
-	public void setProjectStartDate(String projectStartDate) {
-		this.projectStartDate = projectStartDate;
-	}
-
 	public String getProjectTargetDate() {
 		return projectTargetDate;
 	}
@@ -84,6 +86,94 @@ public class Project {
 
 	public void setProjectFile(Blob projectFile) {
 		this.projectFile = projectFile;
+	}
+
+	public String getProjectOwner() {
+		return projectOwner;
+	}
+
+	public void setProjectOwner(String projectOwner) {
+		this.projectOwner = projectOwner;
+	}
+
+	public String getProjectRequestDate() {
+		return projectRequestDate;
+	}
+
+	public void setProjectRequestDate(String projectRequestDate) {
+		this.projectRequestDate = projectRequestDate;
+	}
+
+	public String getProjectRequestSubmitDate() {
+		return projectRequestSubmitDate;
+	}
+
+	public void setProjectRequestSubmitDate(String projectRequestSubmitDate) {
+		this.projectRequestSubmitDate = projectRequestSubmitDate;
+	}
+
+	public String getProjectReason() {
+		return projectReason;
+	}
+
+	public void setProjectReason(String projectReason) {
+		this.projectReason = projectReason;
+	}
+
+	public String getProjectUcrNo() {
+		return projectUcrNo;
+	}
+
+	public void setProjectUcrNo(String projectUcrNo) {
+		this.projectUcrNo = projectUcrNo;
+	}
+
+	public String getProjectUcrDate() {
+		return projectUcrDate;
+	}
+
+	public void setProjectUcrDate(String projectUcrDate) {
+		this.projectUcrDate = projectUcrDate;
+	}
+
+	public String getProjectRequester() {
+		return projectRequester;
+	}
+
+	public void setProjectRequester(String projectRequester) {
+		this.projectRequester = projectRequester;
+	}
+
+	public String getProjectManday() {
+		return projectManday;
+	}
+
+	public void setProjectManday(String projectManday) {
+		this.projectManday = projectManday;
+	}
+
+	public String getProjectDetails() {
+		return projectDetails;
+	}
+
+	public void setProjectDetails(String projectDetails) {
+		this.projectDetails = projectDetails;
+	}
+
+	public String getProjectLastComment() {
+		return projectLastComment;
+	}
+
+	public void setProjectLastComment(String projectLastComment) {
+		this.projectLastComment = projectLastComment;
+	}
+
+	public String getProjectUserlan() {
+		return projectUserlan;
+	}
+
+	public void setProjectUserlan(String projectUserlan) {
+		this.projectUserlan = projectUserlan;
 	}
 
 }

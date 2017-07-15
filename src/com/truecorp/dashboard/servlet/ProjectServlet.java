@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.truecorp.dashboard.criteria.ProjectCriteria;
@@ -53,6 +54,9 @@ public class ProjectServlet extends HttpServlet {
 			String action = request.getParameter("action");
 				
 			switch (action) {
+			case "viewProjectById":
+				viewProjectById(request, response);
+				break;
 			case "viewAllProject":
 				viewAllProject(request, response);
 				break;
@@ -148,5 +152,23 @@ public class ProjectServlet extends HttpServlet {
 		} catch (JsonSyntaxException | JsonIOException | IOException e) {
 			e.printStackTrace();
 		}		
+	}
+	
+	private void viewProjectById(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			String project_id = request.getParameter("project_id");
+			ProjectService pjs = new ProjectService();
+			
+			Project project = pjs.getProjectById(project_id);
+			
+			Gson gson = new Gson();
+			JsonElement element = gson.toJsonTree(project, new TypeToken<Project>(){}.getType());
+			JsonObject json = element.getAsJsonObject();
+			
+			response.setContentType("application/json; charset=utf-8");
+            response.getWriter().print(json);
+		} catch (Exception e){
+			e.printStackTrace();
+		}
 	}
 }

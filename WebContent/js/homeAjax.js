@@ -11,20 +11,26 @@ $(document).ready(function() {
 		}
 	}).then(function (data, status, jqxhr){
 		$.each(data, function(index, value){
-			$("#mostprio").append(
-					"<tr>" +
-					"	<td></td>" +
-					"	<td>" + value.projectId + "</td>" +
-					"	<td>" + value.projectName + "</td>" +
-					"	<td>" + value.projectStatus + "</td>" +
-					"	<td>" + value.projectAccessChannel + "</td>" +
-					"	<td>" + value.projectPriority + "</td>" +
-					"	<td>" + value.projectStartDate + "</td>" +
-					"	<td>" + value.projectTargetDate + "</td>" +
-					"	<td>" + value.projectLaunchDate + "</td>" +
-					"	<td> File </td>" +
-					"	<td></td>" +
-					"</tr>"
+			var prio = value.projectPriority;
+			var target = new Date(value.projectTargetDate);
+			var display = target.getDate() + "/" + (target.getMonth()+1) + "/" + target.getYear();
+			var days_left = target.getDate() - new Date().getDate();
+			if(prio === 'High') prio = 5;
+			else if(prio === 'Mid') prio = 3;
+			else if(prio === 'Low') prio = 1;
+			if(days_left <= prio)
+				$("#mostprio").append(
+					`<tr>
+						<td>` + value.projectId + `</td>
+						<td>` + value.projectName + `</td>
+						<td>` + value.projectOwner + `</td>
+						<td>` + value.projectRequester + `</td>
+						<td>` + value.projectStatus + `</td>
+						<td>` + value.projectAccessChannel + `</td>
+						<td>` + value.projectPriority + `</td>
+						<td>` + display + `</td>
+						<td>` + days_left + `</td>
+					</tr>`
 			); 
 		});
 	});
@@ -39,19 +45,19 @@ $(document).ready(function() {
 	}).then(function (data, status, jxqhr){
 		$.each(data, function(index, value){
 			$("#mostrecent").append(
-					"<tr>" +
-					"	<td></td>" +
-					"	<td>" + value.projectId + "</td>" +
-					"	<td>" + value.projectName + "</td>" +
-					"	<td>" + value.projectStatus + "</td>" +
-					"	<td>" + value.projectAccessChannel + "</td>" +
-					"	<td>" + value.projectPriority + "</td>" +
-					"	<td>" + value.projectStartDate + "</td>" +
-					"	<td>" + value.projectTargetDate + "</td>" +
-					"	<td>" + value.projectLaunchDate + "</td>" +
-					"	<td> File </td>" +
-					"	<td></td>" +
-					"</tr>"
+					`<tr>
+						<td>` + value.projectId + `</td>
+						<td>` +  value.projectName + `</td>
+						<td>` +  value.projectOwner + `</td>
+						<td>` +  value.projectRequester + `</td>
+						<td>` +  value.projectStatus + `</td>
+						<td>` +  value.projectAccessChannel + `</td>
+						<td>` +  value.projectPriority + `</td>
+						<td>` +  value.projectRequestDate + `</td>
+						<td>` +  value.projectRequestSubmitDate + `</td>
+						<td>` +  value.projectTargetDate + `</td>
+						<td> File </td>
+					</tr>`
 			); 
 		});
 	});
@@ -61,7 +67,9 @@ $(document).ready(function() {
 		url : "HomeServlet",
 		contentType : "application/json",
 		data : {
-			action : "viewStatistics"
+			action : "viewStatistics",
+			year1: $("#year1").val(),
+			year2: $("#year2").val()
 		}
 	}).then(function (data, status, jqxhr){
 		$('#total_projects').append(data.total_projects);

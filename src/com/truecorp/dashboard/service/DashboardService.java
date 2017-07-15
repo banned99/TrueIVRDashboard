@@ -6,6 +6,7 @@ import java.util.List;
 import com.truecorp.dashboard.criteria.ProjectCriteria;
 import com.truecorp.dashboard.dao.DashboardDao;
 import com.truecorp.dashboard.model.Project;
+import com.truecorp.dashboard.model.Statistic;
 
 public class DashboardService {
 	public List<Project> getAllProj(int perPage, int page) throws SQLException {
@@ -16,7 +17,6 @@ public class DashboardService {
 		return DashboardDao.getPriorityProject();
 	}
 	
-	//Developing in process & NOT TESTED
 	public List<Project> projectSearch(ProjectCriteria crit, int pageNo, int perPage) throws SQLException{
 		return DashboardDao.projectSearch(crit, pageNo, perPage);
 	}
@@ -25,35 +25,15 @@ public class DashboardService {
 		return DashboardDao.get5RecentProject();
 	}
 
-	public int getTotalProject() throws SQLException {
-		return DashboardDao.getTotalProject();
+	public Statistic getStatistic() throws SQLException {
+		return DashboardDao.getStatistics();
 	}
 
-	public int getTotalProjectYear() throws SQLException {
-		return DashboardDao.getTotalProjectYear();
+	public Statistic getStatistic(String year) throws SQLException {
+		return DashboardDao.getStatistics(year);
 	}
-
-	public int getTotalProjectMonth() throws SQLException{
-		return DashboardDao.getTotalProjectMonth();
-	}
-
-	public int getTotalOpeningProject() throws SQLException {
-		return DashboardDao.getTotalProjectOpening();
-	}
-
-	public int getTotalFinishedProject() throws SQLException {
-		return DashboardDao.getTotalProjectFinished();
-	}
-
-	public int getTotalCancelled() throws SQLException {
-		return DashboardDao.getTotalProjectCancelled();
-	}
-
-	public int getTotalOnTimeProject() throws SQLException {
-		return DashboardDao.getTotalProjectOnTime();
-	}
-
-	public int getTotalLateProject() throws SQLException {
-		return DashboardDao.getTotalProjectLate();
+	
+	public Statistic getStatistic(String year1, String year2) throws SQLException {
+		return DashboardDao.getStatistics(year1, year2);
 	}
 }

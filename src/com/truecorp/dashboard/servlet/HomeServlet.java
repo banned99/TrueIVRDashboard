@@ -19,6 +19,7 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.truecorp.dashboard.model.Project;
+import com.truecorp.dashboard.model.Statistic;
 import com.truecorp.dashboard.service.DashboardService;
 
 /**
@@ -34,7 +35,6 @@ public class HomeServlet<E> extends HttpServlet {
 	 */
 	public HomeServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -69,39 +69,38 @@ public class HomeServlet<E> extends HttpServlet {
 			case "viewStatistics":
 				viewStat(request, response);
 				break;
+			case "getTotalProjects":
+				getTotalProjects(request, response);
+				break;
 			case "view":
 				request.getRequestDispatcher("pages/home.jsp").forward(request, response);
 				break;
 			}
 		} catch (SQLException | IOException | ServletException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	private void viewStat(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 		DashboardService ds = new DashboardService();
-
-		int total_projects = ds.getTotalProject();
-		int total_in_year = ds.getTotalProjectYear();
-		int total_in_month = ds.getTotalProjectMonth();
-		int total_project_opened = ds.getTotalOpeningProject();
-		int total_project_finished = ds.getTotalFinishedProject();
-		int total_project_cancelled = ds.getTotalCancelled();
-		int total_project_on_time = ds.getTotalOnTimeProject();
-		int total_project_late = ds.getTotalLateProject();
 		
-		Map<String, Integer> stats = new HashMap<String, Integer>();
-		stats.put("total_projects", total_projects);
-		stats.put("total_in_year", total_in_year);
-		stats.put("total_in_month", total_in_month);
-		stats.put("total_project_opened", total_project_opened);
-		stats.put("total_project_finished", total_project_finished);
-		stats.put("total_project_cancelled", total_project_cancelled);
-		stats.put("total_project_on_time", total_project_on_time);
-		stats.put("total_project_late", total_project_late);
+		String year1 = request.getParameter("year1");
+		String year2 = request.getParameter("year2");
+		Statistic stat = null;
 		
-		new Gson().toJson(stats, response.getWriter());
+		if (year1 == null && year2 == null) {
+			stat = ds.getStatistic();
+		} else if (year1 != null && year2 == null) {
+			stat = ds.getStatistic(year1);
+		} else {
+			stat = ds.getStatistic(year1, year2);
+		}
+		
+		
+		String json = new Gson().toJson(stat);
+	    response.setContentType("application/json");
+	    response.setCharacterEncoding("UTF-8");
+	    response.getWriter().write(json);
 	}
 
 	private void viewMostPriority(HttpServletRequest request, HttpServletResponse response) throws SQLException {
@@ -140,6 +139,15 @@ public class HomeServlet<E> extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private void getTotalProjects(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+		DashboardService ds = new DashboardService();
+		
+		Map<String, Integer> respond = new HashMap<String, Integer>();
+		respond.put("total_projects", ds.getStatistic().getTotal_projects());
+		
+		new Gson().toJson(respond, response.getWriter());
 	}
 
 }

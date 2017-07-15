@@ -20,7 +20,7 @@ public class AccessChannelDao {
 		int startRow = ((page - 1) * perPage);
 		int endRow = (page * perPage);
 
-		String sql = "SELECT k.* (SELECT a.* FROM AccessChannel a LIMIT ?,?) k LIMIT ?";
+		String sql = "select k.* from (SELECT p.* FROM AccessChannel p order by ac_name LIMIT ?,?) k LIMIT ?;";
 		try {
 			conn = DBUtil.getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -66,7 +66,7 @@ public class AccessChannelDao {
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()){
-				total = rs.getInt(total);
+				total = rs.getInt("total");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

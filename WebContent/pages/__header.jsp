@@ -1,7 +1,7 @@
 <%@ page session="true"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-
+<head>
+	<link href="css/sb-admin-2.css" rel="stylesheet" type="text/css">
+</head>
 <body>
 	<nav class="navbar navbar-default navbar-static-top navbar-fixed-top" role="navigation"
 			style="margin-bottom: 0">

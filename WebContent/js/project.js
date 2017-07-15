@@ -17,7 +17,7 @@ $(document).ready(function() {
 		url : "HomeServlet",
 		contentType : "application/json",
 		data : {
-			action : "viewStatistics"
+			action : "getTotalProjects"
 			}
 		}).then(function(data, status, jqxhr){
 			projectCount = JSON.parse(data).total_projects;
@@ -34,28 +34,25 @@ $(document).ready(function() {
 				$.each(data, function( index, value ){
 					$("tbody").append(
 							"<tr>" +
-							"	<td></td>" +
 							"	<td>" + value.projectId + "</td>" +
 							"	<td>" + value.projectName + "</td>" +
 							"	<td>" + value.projectStatus + "</td>" +
 							"	<td>" + value.projectAccessChannel + "</td>" +
 							"	<td>" + value.projectPriority + "</td>" +
-							"	<td>" + value.projectStartDate + "</td>" +
 							"	<td>" + value.projectTargetDate + "</td>" +
 							"	<td>" + value.projectLaunchDate + "</td>" +
 							"	<td> File </td>" +
-							"	<td></td>" +
 							"</tr>"
 					); // ADD FILE LATER
 				});
 				pageMax = Math.ceil(projectCount / perPage);
 				checkPageMaxMin();
+				$('#curPage').val(1+"/"+pageMax);
 			});
 	});
 	
 	$('#perPage').change(function() {
 		pageNo = 1;
-		$('#curPage').val(1);
 		perPage = element.options[element.selectedIndex].value;
 		$.ajax({
 			type: "GET",
@@ -71,27 +68,24 @@ $(document).ready(function() {
 			$.each(data, function( index, value ){
 				$("tbody").append(
 						"<tr>" +
-						"	<td></td>" +
 						"	<td>" + value.projectId + "</td>" +
 						"	<td>" + value.projectName + "</td>" +
 						"	<td>" + value.projectStatus + "</td>" +
 						"	<td>" + value.projectAccessChannel + "</td>" +
 						"	<td>" + value.projectPriority + "</td>" +
-						"	<td>" + value.projectStartDate + "</td>" +
 						"	<td>" + value.projectTargetDate + "</td>" +
 						"	<td>" + value.projectLaunchDate + "</td>" +
 						"	<td> File </td>" +
-						"	<td></td>" +
 						"</tr>"); // ADD FILE LATER
 			});
 			pageMax = Math.ceil(projectCount / perPage);
 			checkPageMaxMin();
+			$('#curPage').val(1+"/"+pageMax);
 		});
 	});
 	
 	$('#nextPage').click(function () { 
 		pageNo = pageNo + 1;
-		$('#curPage').val(pageNo);
 		$.ajax({
 			type: "GET",
 			url: "ProjectServlet",
@@ -106,26 +100,23 @@ $(document).ready(function() {
 			$.each(data, function( index, value ){
 				$("tbody").append(
 						"<tr>" +
-						"	<td></td>" +
 						"	<td>" + value.projectId + "</td>" +
 						"	<td>" + value.projectName + "</td>" +
 						"	<td>" + value.projectStatus + "</td>" +
 						"	<td>" + value.projectAccessChannel + "</td>" +
 						"	<td>" + value.projectPriority + "</td>" +
-						"	<td>" + value.projectStartDate + "</td>" +
 						"	<td>" + value.projectTargetDate + "</td>" +
 						"	<td>" + value.projectLaunchDate + "</td>" +
 						"	<td> File </td>" +
-						"	<td></td>" +
 						"</tr>"); // ADD FILE LATER
 			});
 			checkPageMaxMin();
+			$('#curPage').val(pageNo+"/"+pageMax);
 		});
 	});
 	
 	$('#prevPage').click(function () { 
 		pageNo = pageNo - 1;
-		$('#curPage').val(pageNo);
 		$.ajax({
 			type: "GET",
 			url: "ProjectServlet",
@@ -140,20 +131,18 @@ $(document).ready(function() {
 			$.each(data, function( index, value ){
 				$("tbody").append(
 						"<tr>" +
-						"	<td></td>" +
 						"	<td>" + value.projectId + "</td>" +
 						"	<td>" + value.projectName + "</td>" +
 						"	<td>" + value.projectStatus + "</td>" +
 						"	<td>" + value.projectAccessChannel + "</td>" +
 						"	<td>" + value.projectPriority + "</td>" +
-						"	<td>" + value.projectStartDate + "</td>" +
 						"	<td>" + value.projectTargetDate + "</td>" +
 						"	<td>" + value.projectLaunchDate + "</td>" +
 						"	<td> File </td>" +
-						"	<td></td>" +
 						"</tr>"); // ADD FILE LATER
 			});
 			checkPageMaxMin();
+			$('#curPage').val(pageNo+"/"+pageMax);
 		});
 	});
 	
@@ -171,10 +160,6 @@ $(document).ready(function() {
 			$('#nextPage').prop("disabled", false);
 			$('#prevPage').prop("disabled", false);
 		}
-	}
-	
-	function calculatePage(total){
-		projectCount = total;
 	}
 	
 	$('#searchButt').click(function () {
@@ -200,20 +185,19 @@ $(document).ready(function() {
 			$.each(data, function( index, value ){
 				$("tbody").append(
 						"<tr>" +
-						"	<td></td>" +
 						"	<td>" + value.projectId + "</td>" +
 						"	<td>" + value.projectName + "</td>" +
 						"	<td>" + value.projectStatus + "</td>" +
 						"	<td>" + value.projectAccessChannel + "</td>" +
 						"	<td>" + value.projectPriority + "</td>" +
-						"	<td>" + value.projectStartDate + "</td>" +
 						"	<td>" + value.projectTargetDate + "</td>" +
 						"	<td>" + value.projectLaunchDate + "</td>" +
 						"	<td> File </td>" +
-						"	<td></td>" +
 						"</tr>"); // ADD FILE LATER
 			});
+			pageMax=1;
 			checkPageMaxMin();
+			$('#curPage').val(pageNo+"/"+pageMax);
 		})
 	});
 });

@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.truecorp.dashboard.criteria.ProjectCriteria;
 import com.truecorp.dashboard.model.Project;
+import com.truecorp.dashboard.model.Statistic;
 import com.truecorp.dashboard.util.DBUtil;
 
 public class DashboardDao {
@@ -43,7 +44,7 @@ public class DashboardDao {
 					project.setProjectStatus(rs.getString("project_status"));
 					project.setProjectAccessChannel(rs.getString("project_ac"));
 					project.setProjectPriority(rs.getString("project_priority"));
-					project.setProjectStartDate(
+					project.setProjectRequestDate(
 							new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("project_start_date")));
 					project.setProjectTargetDate(
 							new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("project_target_date")));
@@ -125,9 +126,6 @@ public class DashboardDao {
 			conn = DBUtil.getConnection();
 			pstmt = conn.prepareStatement(sqlPerPage.toString());
 
-			System.out.println(sqlPerPage.toString());
-			System.out.println(criteriaValue);
-
 			for (int i = 0; i < criteriaValue.size(); i++) {
 				pstmt.setString(i + 1, criteriaValue.get(i));
 			}
@@ -145,7 +143,7 @@ public class DashboardDao {
 				model.setProjectName(rs.getString("project_name"));
 				model.setProjectStatus(rs.getString("project_status"));
 				model.setProjectPriority(rs.getString("project_priority"));
-				model.setProjectStartDate(
+				model.setProjectRequestDate(
 						new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("project_start_date")));
 				model.setProjectTargetDate(
 						new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("project_target_date")));
@@ -191,12 +189,12 @@ public class DashboardDao {
 					project.setProjectStatus(rs.getString("project_status"));
 					project.setProjectAccessChannel(rs.getString("project_ac"));
 					project.setProjectPriority(rs.getString("project_priority"));
-					project.setProjectStartDate(
-							new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("project_start_date")));
+					project.setProjectRequestDate(
+							new SimpleDateFormat("yyyy/MM/dd").format(rs.getDate("project_start_date")));
 					project.setProjectTargetDate(
-							new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("project_target_date")));
+							new SimpleDateFormat("yyyy/MM/dd").format(rs.getDate("project_target_date")));
 					project.setProjectLaunchDate(
-							new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("project_launch_date")));
+							new SimpleDateFormat("yyyy/MM/dd").format(rs.getDate("project_launch_date")));
 					project.setProjectFile(rs.getBlob("project_file"));
 					projectList.add(project);
 				}
@@ -235,7 +233,7 @@ public class DashboardDao {
 					project.setProjectStatus(rs.getString("project_status"));
 					project.setProjectAccessChannel(rs.getString("project_ac"));
 					project.setProjectPriority(rs.getString("project_priority"));
-					project.setProjectStartDate(
+					project.setProjectRequestDate(
 							new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("project_start_date")));
 					project.setProjectTargetDate(
 							new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("project_target_date")));
@@ -256,23 +254,59 @@ public class DashboardDao {
 		}
 		return null;
 	}
-
-	public static int getTotalProject() throws SQLException {
+	
+	public static Statistic getStatistics() throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
-		String sql = "SELECT COUNT(*) as total FROM Project";
-		int result = 0;
+		Statistic stats = null;
+		String[] sql = {
+				"SELECT COUNT(*) as total FROM Project",
+				"SELECT COUNT(*) as total FROM Project WHERE YEAR(project_start_date) = YEAR(CURDATE())",
+				"SELECT COUNT(*) as total FROM Project WHERE MONTH(project_start_date) = MONTH(CURDATE())",
+				"SELECT COUNT(*) as total FROM Project WHERE project_status NOT IN ('cancelled', 'closed')",
+				"SELECT COUNT(*) as total FROM Project WHERE project_status = 'closed'",
+				"SELECT COUNT(*) as total FROM Project WHERE project_status = 'cancelled'",
+				"SELECT distinct COUNT(*) as total from Project where DATEDIFF(project_launch_date, project_target_date) <= 0 order by project_id",
+				"SELECT distinct COUNT(*) as total from Project where DATEDIFF(project_launch_date, project_target_date) > 0 order by project_id"
+				};
 		try{
 			conn = DBUtil.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
+			stats = new Statistic();
 			
-			while (rs.next()){
-				result = rs.getInt("total");
+			for(int i=0; i<sql.length; i++){
+				pstmt = conn.prepareStatement(sql[i]);
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()){
+					switch (i){
+					case 0:
+						stats.setTotal_projects(rs.getInt("total"));
+						break;
+					case 1:
+						stats.setTotal_in_year(rs.getInt("total"));
+						break;
+					case 2:
+						stats.setTotal_in_month(rs.getInt("total"));
+						break;
+					case 3:
+						stats.setTotal_project_opened(rs.getInt("total"));
+						break;
+					case 4:
+						stats.setTotal_project_finished(rs.getInt("total"));
+						break;
+					case 5:
+						stats.setTotal_project_cancelled(rs.getInt("total"));
+						break;
+					case 6:
+						stats.setTotal_project_on_time(rs.getInt("total"));
+						break;
+					case 7:
+						stats.setTotal_project_late(rs.getInt("total"));
+						break;
+					}
+				}
 			}
-			return result;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -280,25 +314,54 @@ public class DashboardDao {
 			pstmt.close();
 			conn.close();
 		}
-		return result;
+		return stats;
 	}
 	
-	public static int getTotalProjectYear() throws SQLException {
+	public static Statistic getStatistics(String year) throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
-		String sql = "SELECT COUNT(*) as total FROM Project WHERE YEAR(project_start_date) = YEAR(CURDATE())";
-		int result = 0;
+		Statistic stats = null;
+		String[] sql = {
+				"SELECT COUNT(*) as total FROM Project WHERE YEAR(project_request_date) = ?",
+				"SELECT COUNT(*) as total FROM Project WHERE project_status NOT IN ('cancelled', 'closed') AND YEAR(project_request_date) = ?",
+				"SELECT COUNT(*) as total FROM Project WHERE project_status = 'closed' AND YEAR(project_request_date) = ?",
+				"SELECT COUNT(*) as total FROM Project WHERE project_status = 'cancelled' AND YEAR(project_request_date) = ?",
+				"SELECT distinct COUNT(*) as total from Project where DATEDIFF(project_launch_date, project_target_date) <= 0 AND YEAR(project_request_date) = ?",
+				"SELECT distinct COUNT(*) as total from Project where DATEDIFF(project_launch_date, project_target_date) > 0 AND YEAR(project_request_date) = ?"
+				};
 		try{
 			conn = DBUtil.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
+			stats = new Statistic();
 			
-			while (rs.next()){
-				result = rs.getInt("total");
+			for(int i=0; i<sql.length; i++){
+				pstmt = conn.prepareStatement(sql[i]);
+				pstmt.setString(1, year);
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()){
+					switch (i){
+					case 0:
+						stats.setTotal_in_year(rs.getInt("total"));
+						break;
+					case 1:
+						stats.setTotal_project_opened(rs.getInt("total"));
+						break;
+					case 2:
+						stats.setTotal_project_finished(rs.getInt("total"));
+						break;
+					case 3:
+						stats.setTotal_project_cancelled(rs.getInt("total"));
+						break;
+					case 4:
+						stats.setTotal_project_on_time(rs.getInt("total"));
+						break;
+					case 5:
+						stats.setTotal_project_late(rs.getInt("total"));
+						break;
+					}
+				}
 			}
-			return result;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -306,23 +369,54 @@ public class DashboardDao {
 			pstmt.close();
 			conn.close();
 		}
-		return result;
+		return stats;
 	}
 	
-	public static int getTotalProjectMonth() throws SQLException {
+	public static Statistic getStatistics(String year1, String year2) throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
-		String sql = "SELECT COUNT(*) as total FROM Project WHERE MONTH(project_start_date) = MONTH(CURDATE())";
-		int result = 0;
+		Statistic stats = null;
+		String[] sql = {
+				"SELECT COUNT(*) as total FROM Project WHERE YEAR(project_request_date) BETWEEN(?,?)",
+				"SELECT COUNT(*) as total FROM Project WHERE project_status NOT IN ('cancelled', 'closed') AND YEAR(project_request_date) BETWEEN(?,?)",
+				"SELECT COUNT(*) as total FROM Project WHERE project_status = 'closed' AND YEAR(project_request_date) BETWEEN(?,?)",
+				"SELECT COUNT(*) as total FROM Project WHERE project_status = 'cancelled' AND YEAR(project_request_date) BETWEEN(?,?)",
+				"SELECT distinct COUNT(*) as total from Project where DATEDIFF(project_launch_date, project_target_date) <= 0 AND YEAR(project_request_date) BETWEEN(?,?)",
+				"SELECT distinct COUNT(*) as total from Project where DATEDIFF(project_launch_date, project_target_date) > 0 AND YEAR(project_request_date) BETWEEN(?,?)"
+				};
 		try{
 			conn = DBUtil.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
+			stats = new Statistic();
 			
-			while (rs.next()){
-				result = rs.getInt("total");
+			for(int i=0; i<sql.length; i++){
+				pstmt = conn.prepareStatement(sql[i]);
+				pstmt.setString(1, year1);
+				pstmt.setString(2, year2);
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()){
+					switch (i){
+					case 0:
+						stats.setTotal_in_year(rs.getInt("total"));
+						break;
+					case 1:
+						stats.setTotal_project_opened(rs.getInt("total"));
+						break;
+					case 2:
+						stats.setTotal_project_finished(rs.getInt("total"));
+						break;
+					case 3:
+						stats.setTotal_project_cancelled(rs.getInt("total"));
+						break;
+					case 4:
+						stats.setTotal_project_on_time(rs.getInt("total"));
+						break;
+					case 5:
+						stats.setTotal_project_late(rs.getInt("total"));
+						break;
+					}
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -331,141 +425,6 @@ public class DashboardDao {
 			pstmt.close();
 			conn.close();
 		}
-		return result;
-	}
-	
-	public static int getTotalProjectOpening() throws SQLException {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		String sql = "SELECT COUNT(*) as total FROM Project WHERE project_status NOT IN ('cancelled', 'closed')";
-		int result = 0;
-		try{
-			conn = DBUtil.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			
-			while (rs.next()){
-				result = rs.getInt("total");
-			}
-			
-			return result;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			rs.close();
-			pstmt.close();
-			conn.close();
-		}
-		return result;
-	}
-	
-	public static int getTotalProjectFinished() throws SQLException {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		String sql = "SELECT COUNT(*) as total FROM Project WHERE project_status = 'closed'";
-		int result = 0;
-		try{
-			conn = DBUtil.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			
-			while (rs.next()){
-				result = rs.getInt("total");
-			}
-			
-			return result;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			rs.close();
-			pstmt.close();
-			conn.close();
-		}
-		return result;
-	}
-	
-	public static int getTotalProjectCancelled() throws SQLException {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		String sql = "SELECT COUNT(*) as total FROM Project WHERE project_status = 'cancelled'";
-		int result = 0;
-		try{
-			conn = DBUtil.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			
-			while (rs.next()){
-				result = rs.getInt("total");
-			}
-			
-			return result;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			rs.close();
-			pstmt.close();
-			conn.close();
-		}
-		return result;
-	}
-	
-	public static int getTotalProjectOnTime() throws SQLException {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		// CHANGE '2017-08-01' TO PROJECT FINISHDATE
-		String sql = "SELECT distinct COUNT(*) as total from Project where DATEDIFF('2017-08-01', project_target_date) <= 0 order by project_id";
-		int result = 0;
-		try{
-			conn = DBUtil.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			
-			while (rs.next()){
-				result = rs.getInt("total");
-			}
-			
-			return result;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			rs.close();
-			pstmt.close();
-			conn.close();
-		}
-		return result;
-	}
-	
-	public static int getTotalProjectLate() throws SQLException {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		// CHANGE '2017-08-01' TO PROJECT FINISHDATE
-		String sql = "SELECT distinct COUNT(*) as total from Project where DATEDIFF('2017-08-01', project_target_date) > 0 order by project_id";
-		int result = 0;
-		try{
-			conn = DBUtil.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			
-			while (rs.next()){
-				result = rs.getInt("total");
-			}
-			
-			return result;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			rs.close();
-			pstmt.close();
-			conn.close();
-		}
-		return result;
+		return stats;
 	}
 }

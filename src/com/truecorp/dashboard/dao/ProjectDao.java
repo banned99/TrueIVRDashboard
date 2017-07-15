@@ -31,7 +31,7 @@ public class ProjectDao {
 				project.setProjectStatus(rs.getString("project_status"));
 				project.setProjectAccessChannel(rs.getString("project_ac"));
 				project.setProjectPriority(rs.getString("project_priority"));
-				project.setProjectStartDate(
+				project.setProjectRequestDate(
 						new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("project_start_date")));
 				project.setProjectTargetDate(
 						new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("project_target_date")));
