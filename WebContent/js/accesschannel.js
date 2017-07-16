@@ -34,7 +34,6 @@ $(document).ready(function () {
 						"<tr>" +
 						"	<td>" + value.acNo + "</td>" +
 						"	<td>" + value.acName + "</td>" +
-						"	<td>" + value.productNo + "</td>" +
 						"	<td>" + value.productName + "</td>" +
 						"	<td>" + value.display +"</td>" +
 						"</tr>"
@@ -65,7 +64,6 @@ $(document).ready(function () {
 						"<tr>" +
 						"	<td>" + value.acNo + "</td>" +
 						"	<td>" + value.acName + "</td>" +
-						"	<td>" + value.productNo + "</td>" +
 						"	<td>" + value.productName + "</td>" +
 						"	<td>" + value.display +"</td>" +
 						"</tr>"
@@ -95,7 +93,6 @@ $(document).ready(function () {
 						"<tr>" +
 						"	<td>" + value.acNo + "</td>" +
 						"	<td>" + value.acName + "</td>" +
-						"	<td>" + value.productNo + "</td>" +
 						"	<td>" + value.productName + "</td>" +
 						"	<td>" + value.display +"</td>" +
 						"</tr>"
@@ -124,7 +121,6 @@ $(document).ready(function () {
 						"<tr>" +
 						"	<td>" + value.acNo + "</td>" +
 						"	<td>" + value.acName + "</td>" +
-						"	<td>" + value.productNo + "</td>" +
 						"	<td>" + value.productName + "</td>" +
 						"	<td>" + value.display +"</td>" +
 						"</tr>"
@@ -173,7 +169,6 @@ $(document).ready(function () {
 						"<tr>" +
 						"	<td>" + value.acNo + "</td>" +
 						"	<td>" + value.acName + "</td>" +
-						"	<td>" + value.productNo + "</td>" +
 						"	<td>" + value.productName + "</td>" +
 						"	<td>" + value.display +"</td>" +
 						"</tr>"

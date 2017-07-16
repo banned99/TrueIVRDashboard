@@ -90,10 +90,6 @@
 								<th class="sorting" tabindex="0"
 									aria-controls="dataTables-example" rowspan="1" colspan="1"
 									aria-label="Browser: activate to sort column ascending"
-									style="width: 60px;"><center>Product No.</center></th>
-								<th class="sorting" tabindex="0"
-									aria-controls="dataTables-example" rowspan="1" colspan="1"
-									aria-label="Browser: activate to sort column ascending"
 									style="width: 60px;"><center>Product Name</center></th>
 								<th class="sorting" tabindex="0"
 									aria-controls="dataTables-example" rowspan="1" colspan="1"
@@ -117,11 +113,6 @@
 		</div>
 	</div>
 	</div>
-	<!-- /.panel-body -->
-	<!-- /.panel -->
-	<!-- /.col-lg-12 -->
-	<!-- /#page-wrapper -->
-	<!-- /#wrapper -->
 	<!-- jQuery -->
 	<script src="js/jquery.min.js"></script>
 
