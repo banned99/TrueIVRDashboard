@@ -17,9 +17,6 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	
-<!-- Bootstrap Core CSS -->
-<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-
 <!-- MetisMenu CSS -->
 <link href="css/metisMenu.min.css" rel="stylesheet" type="text/css">
 
@@ -31,47 +28,60 @@
 <link href="css/dataTables.responsive.css" rel="stylesheet"
 	type="text/css">
 
-<!-- Custom CSS -->
-
-
 <!-- Custom Fonts -->
 <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
 <script src="js/accesschannel.js" type="text/javascript"></script> 
-
-
-<!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
 
 </head>
 <body>
 	<div id="wrapper" class="in">
 		<%@ include file="__header.jsp" %>
 		<div id="page-wrapper" style="min-height: 537px;">
-			<div class="row">
-			<!-- /.dynamic timing -->
+		<div class="row">
+				<!-- /.dynamic timing -->
 				<div class="col-lg-12">
 					<div align=right>
-						<br/><br/>
+						<br> <br> <br> <br>
+						<iframe
+							src="http://free.timeanddate.com/clock/i5skeguw/n28/tlth/fs12/fc777/tt0/tw0/tm3/td2/th2/tb1"
+							frameborder="0" width="136" height="16"> </iframe>
 					</div>
-					<h3 class="page-header">Access Channel</h3>
+					<h3 class="page-header">Access Channel List</h3>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
+			
+			<div id="panel-header" style="min-height: 50px;"> 
+				<div width="100%">
+							<div class="col-lg-2" style="float: left;">
+								<input id="searchId" type="text"
+								class="form-control input-sm" placeholder="No."
+								aria-controls="dataTables-example">
+							</div>
+							<div class="col-lg-2">
+								<input id="searchAC" type="text"
+								class="form-control input-sm" placeholder="Access Channel Name"
+								aria-controls="dataTables-example" >
+							</div>
+							<div class="col-lg-2">
+								<input id="searchProductName" type="text"
+								class="form-control input-sm" placeholder="Product Name"
+								aria-controls="dataTables-example">
+							</div>
+							<div class="col-lg-2">
+								<input id="searchDisplay" type="text"
+								class="form-control input-sm" placeholder="Display"
+								aria-controls="dataTables-example">
+							</div>
+							<div class="col-lg-3">
+								<button id="searchButt" class="btn btn-info" style="margin-left: 30px" type="submit" >Search</button>
+								<button id="clearButt" class="btn btn-info" style="margin-left: 30px" type="submit" >Clear</button>
+							</div>
+				</div>
+			</div>
 
 			<div class="row">
-				<div style="float: left;">
-					<select id="perPage">
-						<option value="1" >1</option>
-						<option value="10" >10</option>
-						<option value="20" selected="selected">20</option>
-						<option value="50" >50</option>
-						<option value="100" >100</option>
-					</select>
-				</div>
-				
 				<div class="col-sm-12">
 					<table width="100%"
 						class="table table-bordered table-hover dataTable no-footer dtr-inline"
@@ -101,28 +111,33 @@
 						</tbody>
 					</table>
 					<br>
-					<div style="float: right;">
-						<button id="prevPage" > Previous </button>
-						<input type="text" id="curPage" readonly="readonly" value="1/1"/>
-						<button id="nextPage" > Next </button>
-					</div>
 					
+				<div>
+					<div style="float: left; vertical-align: middle;">
+						<select id="perPage">
+							<option value="1" >1</option>
+							<option value="10" >10</option>
+							<option value="20" selected="selected">20</option>
+							<option value="50" >50</option>
+							<option value="100" >100</option>
+						</select>
+					</div>
+					<div style="float: right;">
+						<button class="btn btn-outline btn-info" id="prevPage" type="button">Previous</button>
+							<input type="text" id="curPage" 
+								 value="1" style="width: 10%;"/>
+							<span id='maxPage'>/ 1</span>
+						<button class="btn btn-outline btn-info" id="nextPage" type="button">Next</button>
+					</div>
+				</div>
 			</div>
 			<br> <br>
 			<div class="row"></div>
 		</div>
 	</div>
 	</div>
-	<!-- jQuery -->
-	<script src="js/jquery.min.js"></script>
-
-	<!-- Bootstrap Core JavaScript -->
-	<script src="js/bootstrap.min.js"></script>
-
 	<!-- Metis Menu Plugin JavaScript -->
 	<script src="js/metisMenu.min.js"></script>
-
-	<!-- DataTables JavaScript -->
 
 	<!-- Custom Theme JavaScript -->
 	<script src="js/sb-admin-2.js"></script>

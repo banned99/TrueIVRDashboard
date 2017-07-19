@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getRequestDispatcher("pages/login.jsp").forward(request, response);
+		doProcess(request, response);
 	}
 
 	/**
@@ -53,6 +53,9 @@ public class LoginServlet extends HttpServlet {
 			break;
 		case "logout":
 			doLogout(request, response);
+			break;
+		case "view":
+			request.getRequestDispatcher("pages/login.jsp").forward(request, response);
 			break;
 		}
 	}
@@ -75,11 +78,11 @@ public class LoginServlet extends HttpServlet {
 				request.getRequestDispatcher("HomeServlet?action=view").forward(request, response);
 			} else {
 				request.setAttribute("msg", Messages.LOGIN_FAILURE);
-				doGet(request, response);
+				request.getRequestDispatcher("pages/login.jsp").forward(request, response);
 			}
 		} catch (SQLException e) {
 			request.setAttribute("msg", Messages.INTERNAL_SERVER_ERROR);
-			doGet(request, response);
+			request.getRequestDispatcher("pages/login.jsp").forward(request, response);
 		}
 	}
 
@@ -87,14 +90,9 @@ public class LoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
-		Authorize auth = (Authorize) session.getAttribute("user");
-		System.out.println(auth.getUserFullname());
-		if (auth != null) {
-			// insert log
-		}
 		session.removeAttribute("user");
 		session.invalidate();
-		doGet(request, response);
+		request.getRequestDispatcher("pages/login.jsp").forward(request, response);
 	}
 
 }

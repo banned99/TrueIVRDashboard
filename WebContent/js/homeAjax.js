@@ -26,7 +26,7 @@ $(document).ready(function() {
 				$("#mostprio").append(
 					`<tr>
 						<td>` + value.projectId + `</td>
-						<td>` + value.projectName + `</td>
+						<td><a href='ProjectServlet?action=viewProjectById&project_id=`+value.projectId+`'>` + value.projectName + `</td>
 						<td>` + value.projectOwner + `</td>
 						<td>` + value.projectRequester + `</td>
 						<td>` + value.projectStatus + `</td>
@@ -56,7 +56,7 @@ $(document).ready(function() {
 			$("#mostrecent").append(
 					`<tr>
 						<td>` + value.projectId + `</td>
-						<td>` +  value.projectName + `</td>
+						<td><a href='ProjectServlet?action=viewProjectById&project_id=`+value.projectId+`'>` + value.projectName + `</td>
 						<td>` +  value.projectOwner + `</td>
 						<td>` +  value.projectRequester + `</td>
 						<td>` +  value.projectStatus + `</td>

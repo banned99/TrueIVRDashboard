@@ -20,7 +20,7 @@ public class AccessChannelDao {
 		int startRow = ((page - 1) * perPage);
 		int endRow = (page * perPage);
 
-		String sql = "select k.* from (SELECT p.* FROM AccessChannel p order by ac_name LIMIT ?,?) k LIMIT ?;";
+		String sql = "select k.* from (SELECT ac.* FROM AccessChannel ac order by ac_no LIMIT ?,?) k LIMIT ?;";
 		try {
 			conn = DBUtil.getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -34,11 +34,10 @@ public class AccessChannelDao {
 
 			while (rs.next()) {
 				ac = new AccessChannel();
-				ac.setAcNo(rs.getString("ac_id"));
+				ac.setAcNo(rs.getString("ac_no"));
 				ac.setAcName(rs.getString("ac_name"));
-				ac.setProductNo(rs.getString("ac_product_no"));
-				ac.setProductName(rs.getString("ac_product_name"));
-				ac.setDisplay(rs.getString("ac_display"));
+				ac.setProductName(rs.getString("product_name"));
+				ac.setDisplay(rs.getString("display"));
 				acList.add(ac);
 			}
 			return acList;
@@ -93,7 +92,7 @@ public class AccessChannelDao {
 		sql.append("SELECT p.* FROM AccessChannel p WHERE 1=1 ");
 		
 		if (String.valueOf(cri.getAcNo()) != null && String.valueOf(cri.getAcNo()).trim().length() > 0) {
-			sql.append(" and ac_id = ?");
+			sql.append(" and ac_no = ?");
 			criteriaValue.add(String.valueOf(cri.getAcNo()));
 		}
 
@@ -102,18 +101,13 @@ public class AccessChannelDao {
 			criteriaValue.add("%" + cri.getAcName().toLowerCase() + "%");
 		}
 
-		if (cri.getAcProductNo() != null && cri.getAcProductNo().trim().length() > 0) {
-			sql.append(" and project_status = ? ");
-			criteriaValue.add(cri.getAcProductNo());
-		}
-
 		if (cri.getAcProductName() != null && cri.getAcProductName().trim().length() > 0) {
-			sql.append(" and project_priority = ? ");
+			sql.append(" and project_name = ? ");
 			criteriaValue.add(cri.getAcProductName());
 		}
 		
 		if (cri.getDisplay() != null && cri.getDisplay().trim().length() > 0) {
-			sql.append(" and project_ac = ?");
+			sql.append(" and display = ?");
 			criteriaValue.add(cri.getDisplay());
 		}
 		
@@ -122,10 +116,7 @@ public class AccessChannelDao {
 		try {
 			conn = DBUtil.getConnection();
 			pstmt = conn.prepareStatement(sqlPerPage.toString());
-
-			System.out.println(sqlPerPage.toString());
-			System.out.println(criteriaValue);
-
+			
 			for (int i = 0; i < criteriaValue.size(); i++) {
 				pstmt.setString(i + 1, criteriaValue.get(i));
 			}
@@ -141,8 +132,8 @@ public class AccessChannelDao {
 				ac = new AccessChannel();
 				ac.setAcNo(rs.getString("ac_no"));
 				ac.setAcName(rs.getString("ac_name"));
-				ac.setProductName(rs.getString("ac_product_name"));
-				ac.setDisplay(rs.getString("project_display"));
+				ac.setProductName(rs.getString("product_name"));
+				ac.setDisplay(rs.getString("display"));
 				acList.add(ac);
 			}
 		} catch (SQLException e) {

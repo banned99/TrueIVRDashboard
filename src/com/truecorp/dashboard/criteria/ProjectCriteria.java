@@ -4,18 +4,20 @@ public class ProjectCriteria {
 
 	private String projectId;
 	private String projectName;
+	private String projectOwner;
+	private String projectRequester;
 	private String projectStatus;
-	private String projectAccessChannel;
 	private String projectPriority;
-	private String projectStartDate;
-	private String projectTargetDate;
-	private String projectLaunchDate;
+	private String projectSubmitDateStart;
+	private String projectSubmitDateEnd;
+	private String projectTargetDateStart;
+	private String projectTargetDateEnd;
 	
 	public String getProjectId() {
 		return projectId;
 	}
-	public void setProjectId(String projectId2) {
-		this.projectId = projectId2;
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
 	}
 	public String getProjectName() {
 		return projectName;
@@ -29,37 +31,47 @@ public class ProjectCriteria {
 	public void setProjectStatus(String projectStatus) {
 		this.projectStatus = projectStatus;
 	}
-	public String getProjectAccessChannel() {
-		return projectAccessChannel;
-	}
-	public void setProjectAccessChannel(String projectAccessChannel) {
-		this.projectAccessChannel = projectAccessChannel;
-	}
 	public String getProjectPriority() {
 		return projectPriority;
 	}
 	public void setProjectPriority(String projectPriority) {
 		this.projectPriority = projectPriority;
 	}
-	public String getProjectTargetDate() {
-		return projectTargetDate;
+	public String getProjectOwner() {
+		return projectOwner;
 	}
-	public void setProjectTargetDate(String projectTargetDate) {
-		this.projectTargetDate = projectTargetDate;
+	public void setProjectOwner(String projectOwner) {
+		this.projectOwner = projectOwner;
 	}
-	public String getProjectLaunchDate() {
-		return projectLaunchDate;
+	public String getProjectRequester() {
+		return projectRequester;
 	}
-	public void setProjectLaunchDate(String projectLaunchDate) {
-		this.projectLaunchDate = projectLaunchDate;
+	public void setProjectRequester(String projectRequester) {
+		this.projectRequester = projectRequester;
 	}
-	
-	public void setProjectStartDate(String projectStartDate){
-		this.projectStartDate = projectStartDate;
+	public String getProjectSubmitDateStart() {
+		return projectSubmitDateStart;
 	}
-	
-	public String getProjectStartDate() {
-		return projectStartDate;
+	public void setProjectSubmitDateStart(String projectSubmitDateStart) {
+		this.projectSubmitDateStart = projectSubmitDateStart;
+	}
+	public String getProjectSubmitDateEnd() {
+		return projectSubmitDateEnd;
+	}
+	public void setProjectSubmitDateEnd(String projectSubmitDateEnd) {
+		this.projectSubmitDateEnd = projectSubmitDateEnd;
+	}
+	public String getProjectTargetDateStart() {
+		return projectTargetDateStart;
+	}
+	public void setProjectTargetDateStart(String projectTargetDateStart) {
+		this.projectTargetDateStart = projectTargetDateStart;
+	}
+	public String getProjectTargetDateEnd() {
+		return projectTargetDateEnd;
+	}
+	public void setProjectTargetDateEnd(String projectTargetDateEnd) {
+		this.projectTargetDateEnd = projectTargetDateEnd;
 	}
 	
 }

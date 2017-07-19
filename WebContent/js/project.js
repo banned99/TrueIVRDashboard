@@ -28,19 +28,24 @@ $(document).ready(function() {
 				data : {
 					action : "viewAllProject",
 					perPage : perPage,
-					pageNo : pageNo
+					pageNo : pageNo,
+					max: projectCount
 				}
 			}).then(function(data, status, jqxhr){
 				$.each(data, function( index, value ){
+					var acrow = "";
+					$.each(value.projectAccessChannel, function(indexx, temps){
+						acrow += temps+"\n";
+					})
 					$("#data").append(
 							"<tr>" +
-							"	<td>" + (index+1) + "</td>" +
+							"	<td>" + parseInt((index+1)+(parseInt(perPage) * parseInt(pageNo-1))) + "</td>" +
 							"	<td><a href='ProjectServlet?action=viewProjectById&project_id="+value.projectId+"'>" + value.projectName + "</td>" +
 							"	<td>" + value.projectOwner + "</td>" +
 							"	<td>" + value.projectRequester + "</td>" +
 							"	<td>" + value.projectStatus + "</td>" +
 							"	<td>" + value.projectPriority + "</td>" +
-							"	<td>" + value.projectAccessChannel + "</td>" +
+							"	<td>" + acrow + "</td>" +
 							"	<td>" + value.projectRequestSubmitDate + "</td>"+
 							"	<td>" + value.projectTargetDate + "</td>" +
 							"</tr>"
@@ -63,20 +68,25 @@ $(document).ready(function() {
 			data: {
 				action: "viewAllProject",
 				perPage : perPage,
-				pageNo: pageNo
+				pageNo: pageNo,
+				max: projectCount
 			}
 		}).then(function(data, status, jqxhr) {
 			$('#data').empty();
 			$.each(data, function( index, value ){
+				var acrow = "";
+				$.each(value.projectAccessChannel, function(indexx, temps){
+					acrow += temps+"\n";
+				})
 				$("#data").append(
 						"<tr>" +
-						"	<td>" + (index+1) + "</td>" +
+						"	<td>" + parseInt((index+1)+(parseInt(perPage) * parseInt(pageNo-1))) + "</td>" +
 						"	<td><a href='ProjectServlet?action=viewProjectById&project_id="+value.projectId+"'>" + value.projectName + "</td>" +
 						"	<td>" + value.projectOwner + "</td>" +
 						"	<td>" + value.projectRequester + "</td>" +
 						"	<td>" + value.projectStatus + "</td>" +
 						"	<td>" + value.projectPriority + "</td>" +
-						"	<td>" + value.projectAccessChannel + "</td>" +
+						"	<td>" + acrow + "</td>" +
 						"	<td>" + value.projectRequestSubmitDate + "</td>"+
 						"	<td>" + value.projectTargetDate + "</td>" +
 						"</tr>"); 
@@ -97,20 +107,25 @@ $(document).ready(function() {
 			data: {
 				action: "viewAllProject",
 				perPage : perPage,
-				pageNo: pageNo
+				pageNo: pageNo,
+				max: projectCount
 			}
 		}).then(function(data, status, jqxhr) {
 			$('#data').empty();
 			$.each(data, function( index, value ){
+				var acrow = "";
+				$.each(value.projectAccessChannel, function(indexx, temps){
+					acrow += temps+"\n";
+				})
 				$("#data").append(
 						"<tr>" +
-						"	<td>" + (index+1) + "</td>" +
+						"	<td>" + parseInt((index+1)+(parseInt(perPage) * parseInt(pageNo-1))) + "</td>" +
 						"	<td><a href='ProjectServlet?action=viewProjectById&project_id="+value.projectId+"'>" + value.projectName + "</td>" +
 						"	<td>" + value.projectOwner + "</td>" +
 						"	<td>" + value.projectRequester + "</td>" +
 						"	<td>" + value.projectStatus + "</td>" +
 						"	<td>" + value.projectPriority + "</td>" +
-						"	<td>" + value.projectAccessChannel + "</td>" +
+						"	<td>" + acrow + "</td>" +
 						"	<td>" + value.projectRequestSubmitDate + "</td>"+
 						"	<td>" + value.projectTargetDate + "</td>" +
 						"</tr>");
@@ -130,23 +145,28 @@ $(document).ready(function() {
 			data: {
 				action: "viewAllProject",
 				perPage : perPage,
-				pageNo: pageNo
+				pageNo: pageNo,
+				max: projectCount
 			}
 		}).then(function(data, status, jqxhr) {
 			$('#data').empty();
 			$.each(data, function( index, value ){
+				var acrow = "";
+				$.each(value.projectAccessChannel, function(indexx, temps){
+					acrow += temps+"\n";
+				})
 				$("#data").append(
-						"<tr>" +
-						"	<td>" + (index+1) + "</td>" +
-						"	<td><a href='ProjectServlet?action=viewProjectById&project_id="+value.projectId+"'>" + value.projectName + "</td>" +
-						"	<td>" + value.projectOwner + "</td>" +
-						"	<td>" + value.projectRequester + "</td>" +
-						"	<td>" + value.projectStatus + "</td>" +
-						"	<td>" + value.projectPriority + "</td>" +
-						"	<td>" + value.projectAccessChannel + "</td>" +
-						"	<td>" + value.projectRequestSubmitDate + "</td>"+
-						"	<td>" + value.projectTargetDate + "</td>" +
-						"</tr>");
+						`<tr>
+							<td>` + parseInt((index+1)+(parseInt(perPage) * parseInt(pageNo-1))) + `</td>
+							<td><a href='ProjectServlet?action=viewProjectById&project_id=`+value.projectId+`'>` + value.projectName + `</td> 
+							<td>` + value.projectOwner + `</td>
+							<td>` + value.projectRequester + `</td>
+							<td>` + value.projectStatus + `</td>
+							<td>` + value.projectPriority + `</td>
+							<td>` + acrow + `</td>
+							<td>` + value.projectRequestSubmitDate + `</td>
+							<td>` + value.projectTargetDate + `</td>
+						</tr>`);
 			});
 			checkPageMaxMin();
 			$('#curPage').val(pageNo);
@@ -171,18 +191,19 @@ $(document).ready(function() {
 	}
 	
 	$('#searchButt').click(function () {
+		pageNo = 1;
 		var projectId = $('#searchId').val();
 		var projectName = $('#searchName').val();
 		var projectOwner = $('#searchOwner').val();
 		var projectRequester = $('#searchRequester').val();
 	 	var projectStatus = $('#searchStatus').val();
 		var projectPriority = $('#searchPrio').val();
-	 	var projectSubmitDateStart = $('#searchSubmit').val().substr(0,9);
-	 	var projectSubmitDateEnd = $('#searchSubmit').val().substr(13,9);
-	 	var projectTargetDateStart = $('#searchTarget').val().substr(0,9);
-	 	var projectTargetDateEnd = $('#searchTarget').val().substr(13,9);
-	 	if (projectId === null && projectName === null && projectOwner === null && projectRequester === null && projectPriority === null && 
-	 			projectStatus === null && projectTargetDateStart === '01/01/2017' && projectSubmitDateStart === '01/01/2017' && 
+	 	var projectSubmitDateStart = $('#searchSubmit').val().substr(0,10);
+	 	var projectSubmitDateEnd = $('#searchSubmit').val().substr(13,10);
+	 	var projectTargetDateStart = $('#searchTarget').val().substr(0,10);
+	 	var projectTargetDateEnd = $('#searchTarget').val().substr(13,10);
+	 	if (projectId === "" && projectName === "" && projectOwner === "" && projectRequester === "" && projectPriority === "" && 
+	 			projectStatus === "" && projectTargetDateStart === '01/01/2017' && projectSubmitDateStart === '01/01/2017' && 
 	 			projectTargetDateEnd === '01/01/2017' && projectSubmitDateEnd === '01/01/2017')
 	 		var action = "viewAllProject";
 	 	else var action = "projectSearch";
@@ -192,8 +213,6 @@ $(document).ready(function() {
 			contentType: "application/json",
 			data: {
 				action: action,
-				perPage : perPage,
-				pageNo: pageNo,
 				projectId: projectId,
 				projectName: projectName,
 				projectOwner: projectOwner,
@@ -208,23 +227,82 @@ $(document).ready(function() {
 		}).then(function(data, status, jqxhr){
 			$('#data').empty();
 			$.each(data, function( index, value ){
+				var acrow = "";
+				$.each(value.projectAccessChannel, function(indexx, temps){
+					acrow += temps+"\n";
+				})
 				$("#data").append(
 						"<tr>" +
-						"	<td>" + (index+1) + "</td>" +
+						"	<td>" + parseInt((index+1)+(parseInt(perPage) * parseInt(pageNo-1))) + "</td>" +
 						"	<td><a href='ProjectServlet?action=viewProjectById&project_id="+value.projectId+"'>" + value.projectName + "</td>" +
 						"	<td>" + value.projectOwner + "</td>" +
 						"	<td>" + value.projectRequester + "</td>" +
 						"	<td>" + value.projectStatus + "</td>" +
 						"	<td>" + value.projectPriority + "</td>" +
-						"	<td>" + value.projectAccessChannel + "</td>" +
+						"	<td>" + acrow + "</td>" +
 						"	<td>" + value.projectRequestSubmitDate + "</td>"+
 						"	<td>" + value.projectTargetDate + "</td>" +
 						"</tr>");
 			});
-			pageMax=1;
+			checkPageMaxMin();
+			$('#curPage').val(pageNo);
+			$('#maxPage').text("/ 1");
+			$('#nextPage').prop("disabled", true);
+			$('#prevPage').prop("disabled", true);
+			$('#perPage').prop("disabled", true);
+		});
+	});
+	
+	$('#clearButt').click(function () {
+		$('#searchId').val("");
+		$('#searchName').val("");
+		$('#searchOwner').val("");
+		$('#searchRequester').val("");
+	 	$('#searchStatus').val("");
+		$('#searchPrio').val("");
+	 	$('#searchSubmit').val("");
+	 	$('#searchTarget').val("");
+		pageNo = 1;
+		
+		pageMax = 1;
+		pageMin = 1;
+		$('#nextPage').prop("disabled", false);
+		$('#prevPage').prop("disabled", false);
+		$('#perPage').prop("disabled", false);
+		$.ajax({
+			type : "GET",
+			url : "ProjectServlet",
+			contentType : "application/json",
+			data : {
+				action : "viewAllProject",
+				perPage : perPage,
+				pageNo : pageNo,
+				max: projectCount
+			}
+		}).then(function(data, status, jqxhr){
+			$.each(data, function( index, value ){
+				var acrow = "";
+				$.each(value.projectAccessChannel, function(indexx, temps){
+					acrow += temps+"\n";
+				})
+				$("#data").append(
+						"<tr>" +
+						"	<td>" + parseInt((index+1)+(parseInt(perPage) * parseInt(pageNo-1))) + "</td>" +
+						"	<td><a href='ProjectServlet?action=viewProjectById&project_id="+value.projectId+"'>" + value.projectName + "</td>" +
+						"	<td>" + value.projectOwner + "</td>" +
+						"	<td>" + value.projectRequester + "</td>" +
+						"	<td>" + value.projectStatus + "</td>" +
+						"	<td>" + value.projectPriority + "</td>" +
+						"	<td>" + acrow + "</td>" +
+						"	<td>" + value.projectRequestSubmitDate + "</td>"+
+						"	<td>" + value.projectTargetDate + "</td>" +
+						"</tr>"
+				);
+			});
+			pageMax = Math.ceil(projectCount / perPage);
 			checkPageMaxMin();
 			$('#curPage').val(pageNo);
 			$('#maxPage').text("/ "+pageMax);
 		});
-	});
+	})
 });

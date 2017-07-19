@@ -9,16 +9,16 @@ import com.truecorp.dashboard.model.Project;
 import com.truecorp.dashboard.model.Statistic;
 
 public class DashboardService {
-	public List<Project> getAllProj(int perPage, int page) throws SQLException {
-		return DashboardDao.getRecentProject(perPage, page);
+	public List<Project> getAllProj(int perPage, int page, int max) throws SQLException {
+		return DashboardDao.getRecentProject(perPage, page, max);
 	}
 	
 	public List<Project> getPriorityProj() throws SQLException {
 		return DashboardDao.getPriorityProject();
 	}
 	
-	public List<Project> projectSearch(ProjectCriteria crit, int pageNo, int perPage) throws SQLException{
-		return DashboardDao.projectSearch(crit, pageNo, perPage);
+	public List<Project> projectSearch(ProjectCriteria crit) throws SQLException{
+		return DashboardDao.projectSearch(crit);
 	}
 	
 	public List<Project> get5RecentProject() throws SQLException {

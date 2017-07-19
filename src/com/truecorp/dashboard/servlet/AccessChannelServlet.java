@@ -81,7 +81,6 @@ public class AccessChannelServlet extends HttpServlet {
 		ACCriteria cri = new ACCriteria();
 		cri.setAcNo(request.getParameter("acNo"));
 		cri.setAcName(request.getParameter("acName"));
-		cri.setAcProductNo(request.getParameter("acProductNo"));
 		cri.setAcProductName(request.getParameter("acProductName"));
 		cri.setDisplay(request.getParameter("acDisplay"));
 		

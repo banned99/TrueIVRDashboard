@@ -15,38 +15,32 @@ import com.truecorp.dashboard.util.DBUtil;
 
 public class DashboardDao {
 
-	public static List<Project> getRecentProject(int perPage, int page) throws SQLException {
+	public static List<Project> getRecentProject(int perPage, int page, int max) throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 	
-		int startRow = ((page-1) * perPage);
-		int endRow = (page * perPage);
+		int startRow = max - ((page-1) * perPage);
+		int endRow = max - (page * perPage)+1;
 		
 		List<Project> projectList = new ArrayList<Project>();
-		String sql = "SELECT k.* FROM "
-				+ "(SELECT p.*, ac.*, ul.* FROM Project p "
-				+ "LEFT OUTER JOIN project_affect_acchannel pas on p.project_id=pas.project_id "
-				+ "LEFT OUTER JOIN accesschannel ac on pas.ac_no = ac.ac_no "
-				+ "LEFT OUTER JOIN userlan ul on p.project_userlan = ul.userlan "
-				+ "ORDER BY p.project_id DESC LIMIT ?,?)"
-				+ " k LIMIT ?;";
+		String sql = "SELECT k.* FROM (SELECT p.*, ac.*, ul.* FROM Project p LEFT OUTER JOIN project_affect_acchannel pas on p.project_id=pas.project_id LEFT OUTER JOIN accesschannel ac on pas.ac_no = ac.ac_no LEFT OUTER JOIN userlan ul on p.project_userlan = ul.userlan where p.project_id between ? and ? Order BY p.project_id DESC ) k";
 		try {
 			conn = DBUtil.getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, startRow);
-			pstmt.setInt(2, endRow);
-			pstmt.setInt(3, perPage);
+			pstmt.setInt(1, endRow);
+			pstmt.setInt(2, startRow);
 			rs = pstmt.executeQuery();
 			
 			if (rs != null) {
 				Project project = null;
-				List<String> ac = new ArrayList<String>();
+				List<String> ac = null;
 				int temp = 0;
-				
 				while (rs.next()) {
 					if(rs.getInt("project_id") != temp){
+						ac = new ArrayList<String>();
 						ac.add(rs.getString("ac_name"));
+						temp = rs.getInt("project_id");
 						project = new Project();
 						project.setProjectId(rs.getInt("project_id"));
 						project.setProjectName(rs.getString("project_name"));
@@ -62,7 +56,7 @@ public class DashboardDao {
 						if (rs.getDate("project_submit_date") != null)
 							project.setProjectRequestSubmitDate(
 									new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("project_submit_date")));
-						else project.setProjectRequestDate("");
+						else project.setProjectRequestSubmitDate("");
 						
 						if (rs.getDate("project_target_date") != null)
 							project.setProjectTargetDate(
@@ -93,6 +87,7 @@ public class DashboardDao {
 						projectList.add(project);
 					} else {
 						ac.add(rs.getString("ac_name"));
+						project.setProjectAccessChannel(ac);
 					}
 				}
 			}
@@ -107,26 +102,23 @@ public class DashboardDao {
 		return projectList;
 	}
 
-	public static List<Project> projectSearch(ProjectCriteria cri, int page, int perPage) throws SQLException {
+	public static List<Project> projectSearch(ProjectCriteria cri) throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		int startRow = ((page-1) * perPage);
-		int endRow = (page * perPage);
-
 		List<Project> resultList = new ArrayList<Project>();
 		List<String> criteriaValue = new ArrayList<String>();
 
 		StringBuffer sql = new StringBuffer();
-		sql.append("SELECT p.* FROM Project p "
+		sql.append("SELECT p.*, ac.*, ul.* FROM Project p "
 				+ "LEFT OUTER JOIN project_affect_acchannel pas on p.project_id=pas.project_id " 
 				+ "LEFT OUTER JOIN accesschannel ac on pas.ac_no = ac.ac_no "
 				+ "LEFT OUTER JOIN userlan ul on p.project_userlan = ul.userlan "
 				+ "WHERE 1=1 ");
 
 		if (String.valueOf(cri.getProjectId()) != null && String.valueOf(cri.getProjectId()).trim().length() > 0) {
-			sql.append(" and project_id = ?");
+			sql.append(" and p.project_id = ?");
 			criteriaValue.add(String.valueOf(cri.getProjectId()));
 		}
 
@@ -139,33 +131,36 @@ public class DashboardDao {
 			sql.append(" and project_status = ? ");
 			criteriaValue.add(cri.getProjectStatus());
 		}
+		
+		if (cri.getProjectOwner() != null && cri.getProjectOwner().trim().length() > 0) {
+			sql.append(" and project_owner = ? ");
+			criteriaValue.add(cri.getProjectOwner());
+		}
+		
+		if (cri.getProjectRequester() != null && cri.getProjectRequester().trim().length() > 0) {
+			sql.append(" and project_requester = ? ");
+			criteriaValue.add(cri.getProjectRequester());
+		}
 
 		if (cri.getProjectPriority() != null && cri.getProjectPriority().trim().length() > 0) {
 			sql.append(" and project_priority = ? ");
 			criteriaValue.add(cri.getProjectPriority());
 		}
 		
-		if (cri.getProjectAccessChannel() != null && cri.getProjectAccessChannel().trim().length() > 0) {
-			sql.append(" and ac_name = ?");
-			criteriaValue.add(cri.getProjectAccessChannel());
+		if (cri.getProjectSubmitDateStart() != null && cri.getProjectSubmitDateStart().trim().length() > 0 
+				&& cri.getProjectSubmitDateEnd() != null && cri.getProjectSubmitDateEnd().trim().length() > 0) {
+			sql.append(" and project_submit_date >= date_format(?, '%Y-%m-%d') and project_submit_date <= date_format(?, '%Y-%m-%d')");
+			criteriaValue.add(cri.getProjectSubmitDateStart());
+			criteriaValue.add(cri.getProjectSubmitDateEnd());
 		}
 		
-		if (cri.getProjectStartDate() != null && cri.getProjectStartDate().trim().length() > 0) {
-			sql.append(" and project_request_date = date_format(?, '%Y-%m-%d')");
-			criteriaValue.add(cri.getProjectStartDate());
+		if (cri.getProjectTargetDateStart() != null && cri.getProjectTargetDateStart().trim().length() > 0 
+				&& cri.getProjectTargetDateEnd() != null && cri.getProjectTargetDateEnd().trim().length() > 0) {
+			sql.append(" and project_target_date >= date_format(?, '%Y-%m-%d') and project_target_date <= date_format(?, '%Y-%m-%d')");
+			criteriaValue.add(cri.getProjectTargetDateStart());
+			criteriaValue.add(cri.getProjectTargetDateEnd());
 		}
-
-		if (cri.getProjectTargetDate() != null && cri.getProjectTargetDate().trim().length() > 0) {
-			sql.append(" and project_target_date = date_format(?, '%Y-%m-%d')");
-			criteriaValue.add(cri.getProjectTargetDate());
-		}
-
-		if (cri.getProjectLaunchDate() != null && cri.getProjectLaunchDate().trim().length() > 0) {
-			sql.append(" and project_launch_date = date_format(?, '%Y-%m-%d')");
-			criteriaValue.add(cri.getProjectLaunchDate());
-		}
-
-		String sqlPerPage = "SELECT k.* FROM (" + sql +" LIMIT ?,?) k LIMIT ?";
+		String sqlPerPage = "SELECT k.* FROM (" + sql +" order by p.project_id desc ) k";
 
 		try {
 			conn = DBUtil.getConnection();
@@ -174,19 +169,16 @@ public class DashboardDao {
 			for (int i = 0; i < criteriaValue.size(); i++) {
 				pstmt.setString(i + 1, criteriaValue.get(i));
 			}
-
-			pstmt.setInt(criteriaValue.size()+1, startRow);
-			pstmt.setInt(criteriaValue.size()+2, endRow);
-			pstmt.setInt(criteriaValue.size()+3, perPage);
 			
 			rs = pstmt.executeQuery();
 			Project project = null;
 			
-			List<String> ac = new ArrayList<String>();
+			List<String> ac = null;
 			int temp = 0;
 			
 			while (rs.next()) {
 				if(rs.getInt("project_id") != temp){
+					ac = new ArrayList<String>();
 					ac.add(rs.getString("ac_name"));
 					temp = rs.getInt("project_id");
 					project = new Project();
@@ -204,7 +196,7 @@ public class DashboardDao {
 					if (rs.getDate("project_submit_date") != null)
 						project.setProjectRequestSubmitDate(
 								new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("project_submit_date")));
-					else project.setProjectRequestDate("");
+					else project.setProjectRequestSubmitDate("");
 					
 					if (rs.getDate("project_target_date") != null)
 						project.setProjectTargetDate(
@@ -235,6 +227,7 @@ public class DashboardDao {
 					resultList.add(project);
 				} else {
 					ac.add(rs.getString("ac_name"));
+					project.setProjectAccessChannel(ac);
 				}
 			}
 		} catch (SQLException e) {
@@ -257,7 +250,7 @@ public class DashboardDao {
 				+ "LEFT OUTER JOIN project_affect_acchannel pas on p.project_id=pas.project_id " 
 				+ "LEFT OUTER JOIN accesschannel ac on pas.ac_no = ac.ac_no "
 				+ "WHERE DATEDIFF(project_target_date, CURDATE()) > 0 AND "
-				+ "DATEDIFF(project_target_date, CURDATE()) <= 5 ORDER BY project_target_date DESC LIMIT 10";
+				+ "DATEDIFF(project_target_date, CURDATE()) <= 5 ORDER BY project_target_date DESC";
 		
 		try {
 			conn = DBUtil.getConnection();
@@ -268,7 +261,7 @@ public class DashboardDao {
 			Project project = null;
 			
 			if( rs != null){
-				List<String> ac = new ArrayList<String>();
+				List<String> ac = null;
 				int temp = 0;
 				while(rs.next()){
 					if(rs.getInt("project_id") != temp){
@@ -315,8 +308,8 @@ public class DashboardDao {
 		
 		String sql = "SELECT * FROM Project p "
 				+ "LEFT OUTER JOIN project_affect_acchannel pas on p.project_id=pas.project_id " 
-				+ "LEFT OUTER JOIN accesschannel ac on pas.ac_no = ac.ac_no "
-				+ "ORDER BY p.project_id DESC LIMIT 5;";
+				+ "LEFT OUTER JOIN accesschannel ac on pas.ac_no = ac.ac_no where p.project_id between 48 and 52 "
+				+ "ORDER BY p.project_id DESC;";
 		try {
 			conn = DBUtil.getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -326,18 +319,19 @@ public class DashboardDao {
 			Project project = null;
 			
 			if (rs != null){
-				List<String> ac = new ArrayList<String>();
+				List<String> ac = null;
 				int temp = 0;
 				while (rs.next()){
 					if(rs.getInt("project_id") != temp){
+						ac = new ArrayList<String>();
 						ac.add(rs.getString("ac_name"));
 						temp = rs.getInt("project_id");
 						project = new Project();
 						project.setProjectId(rs.getInt("project_id"));
 						project.setProjectName(rs.getString("project_name"));
 						project.setProjectStatus(rs.getString("project_status"));
-						project.setProjectAccessChannel(ac);
 						project.setProjectPriority(rs.getString("project_priority"));
+						project.setProjectAccessChannel(ac);
 						
 						if (rs.getDate("project_user_request_date") != null)
 							project.setProjectRequestDate(
@@ -347,7 +341,7 @@ public class DashboardDao {
 						if (rs.getDate("project_submit_date") != null)
 							project.setProjectRequestSubmitDate(
 									new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("project_submit_date")));
-						else project.setProjectRequestDate("");
+						else project.setProjectRequestSubmitDate("");
 						
 						if (rs.getDate("project_target_date") != null)
 							project.setProjectTargetDate(
@@ -359,6 +353,7 @@ public class DashboardDao {
 						projectList.add(project);
 					} else {
 						ac.add(rs.getString("ac_name"));
+						project.setProjectAccessChannel(ac);
 					}
 				}
 			}
@@ -610,11 +605,13 @@ public class DashboardDao {
 			
 			projs = new ArrayList<Project>();
 			Project project = null;
-			List<String> ac = new ArrayList<String>();
+			List<String> ac = null;
 			int temp = 0;
 			
 			while (rs.next()) {
 				if(rs.getInt("project_id") != temp){
+					ac = new ArrayList<String>();
+					temp = rs.getInt("project_id");
 					ac.add(rs.getString("ac_name"));
 					project = new Project();
 					project.setProjectId(rs.getInt("project_id"));
@@ -631,7 +628,7 @@ public class DashboardDao {
 					if (rs.getDate("project_submit_date") != null)
 						project.setProjectRequestSubmitDate(
 								new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("project_submit_date")));
-					else project.setProjectRequestDate("");
+					else project.setProjectRequestSubmitDate("");
 					
 					if (rs.getDate("project_target_date") != null)
 						project.setProjectTargetDate(
@@ -649,6 +646,7 @@ public class DashboardDao {
 					projs.add(project);
 				} else {
 					ac.add(rs.getString("ac_name"));
+					project.setProjectAccessChannel(ac);
 				}
 			}
 		} catch (Exception e) {

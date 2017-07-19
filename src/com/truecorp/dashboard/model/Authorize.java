@@ -1,15 +1,9 @@
 package com.truecorp.dashboard.model;
 
 public class Authorize {
-	private String userID;
 	private String username;
 	private String userFullname;
-	private String userRoleId;
 	private String userRole;
-
-	public String getUserID() {
-		return this.userID;
-	}
 
 	public String getUsername() {
 		return this.username;
@@ -17,10 +11,6 @@ public class Authorize {
 
 	public String getUserRole() {
 		return this.userRole;
-	}
-
-	public void setUserID(String userID) {
-		this.userID = userID;
 	}
 
 	public String getUserFullname() {
@@ -38,13 +28,4 @@ public class Authorize {
 	public void setUserRole(String role) {
 		this.userRole = role;
 	}
-
-	public String getUserRoleId() {
-		return userRoleId;
-	}
-
-	public void setUserRoleId(String userRoleId) {
-		this.userRoleId = userRoleId;
-	}
-	
 }

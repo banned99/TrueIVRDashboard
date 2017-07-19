@@ -13,10 +13,10 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	
 	<!-- jQuery library -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="js/jquery.min.js"></script>
 
 	<!-- Latest compiled JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 	
 	<script src="js/project.js" type="text/javascript"></script>
 	
@@ -69,10 +69,7 @@
 				<!-- /.dynamic timing -->
 				<div class="col-lg-12">
 					<div align=right>
-						<br> <br> <br> <br>
-						<iframe
-							src="http://free.timeanddate.com/clock/i5skeguw/n28/tlth/fs12/fc777/tt0/tw0/tm3/td2/th2/tb1"
-							frameborder="0" width="136" height="16"> </iframe>
+						<br> <br> <br>
 					</div>
 					<h3 class="page-header">Project List</h3>
 				</div>
@@ -132,7 +129,8 @@
 							<input id="searchTarget" type="text" name="daterange" value="01/01/2017 - 01/01/2017" 
 								class="form-control input-sm" />
 						</label>
-						<label><button id="searchButton" class="btn btn-info" style="margin-left: 10px;" type="submit" >Search</button></label>
+						<label><button id="searchButt" class="btn btn-info" style="margin-left: 10px;" type="submit" >Search</button></label>
+						<label><button id="clearButt" class="btn btn-info" style="margin-left: 10px;" type="submit" >Clear</button></label>
 					</div>
 				</div>
 			</div>
@@ -180,10 +178,6 @@
 								aria-controls="dataTables-example" rowspan="1" colspan="1"
 								aria-label="Platform(s): activate to sort column ascending"
 								style="width: 7%;"><center>Target Date</center></th>
-							<th class="sorting" tabindex="0"
-								aria-controls="dataTables-example" rowspan="1" colspan="1"
-								aria-label="Platform(s): activate to sort column ascending"
-								style="width: 1%;"><center>File</center></th>
 						</tr>
 					</thead>
 					<tbody id="data" align="center">
@@ -192,7 +186,7 @@
 				<br>
 			</div>
 			<div>
-					<div style="float: left; vertical-align: middle;">
+				<div style="float: left; vertical-align: middle;">
 					<select id="perPage">
 						<option value="1" >1</option>
 						<option value="10" >10</option>
@@ -200,18 +194,29 @@
 						<option value="50" >50</option>
 						<option value="100" >100</option>
 					</select>
-					</div>
-					<div style="float: right;">
-						<button class="btn btn-outline btn-info" id="prevPage" type="button">Previous</button>
-							<input type="text" id="curPage" 
-								 value="1" style="width: 10%;"/>
-							<span id='maxPage'>/ 1</span>
-						<button class="btn btn-outline btn-info" id="nextPage" type="button">Next</button>
-					</div>
 				</div>
+				<div style="float: right;">
+					<button class="btn btn-outline btn-info" id="prevPage" type="button">Previous</button>
+						<input type="text" id="curPage" 
+							 value="1" style="width: 10%;"/>
+						<span id='maxPage'>/ 1</span>
+					<button class="btn btn-outline btn-info" id="nextPage" type="button">Next</button>
+				</div>
+			</div>
 		</div>
-		<br> <br>
-		<div class="row"></div>
+		<div class="row">
+			<!-- /.dynamic timing -->
+			<div class="col-lg-12">
+				<div align=right>
+					<br> <br>
+					<iframe
+						src="http://free.timeanddate.com/clock/i5skeguw/n28/tlth/fs12/fc777/tt0/tw0/tm3/td2/th2/tb1"
+						frameborder="0" width="136" height="16"> </iframe>
+				</div>
+				<br><br>
+			</div>
+			<!-- /.col-lg-12 -->
+		</div>
 	</div>
 	</div>
 
@@ -219,10 +224,6 @@
 	
 	<!-- Metis Menu Plugin JavaScript -->
 	<script src="js/metisMenu.min.js"></script>
-	
-	<script src="js/dataTables.bootstrap.min.js"></script>
-	
-	<script src="js/dataTables.responsive.js"></script>
 
 </body>
 </html>

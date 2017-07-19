@@ -5,9 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.truecorp.dashboard.util.DBUtil;
-import com.truecorp.dashboard.exception.InvalidLoginException;
 import com.truecorp.dashboard.model.Authorize;
+import com.truecorp.dashboard.util.DBUtil;
 
 public class LoginDao {
 
@@ -15,7 +14,7 @@ public class LoginDao {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String sql = "SELECT * FROM Authorize WHERE username=? and password=? LIMIT 1";
+		String sql = "SELECT * FROM userlan ul left outer join role r on ul.role_id = r.role_id WHERE userlan=? and pwd=? LIMIT 1";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -25,23 +24,15 @@ public class LoginDao {
 			
 			Authorize auth = null;
 
-			if (rs != null) {
-				while (rs.next()) {
-					auth = new Authorize();
-					auth.setUserID(rs.getString("user_id"));
-					auth.setUsername(rs.getString("username"));
-					auth.setUserFullname(rs.getString("user_fullname"));
-					auth.setUserRole(rs.getString("user_role"));
-//					auth.setbalh(rs.getString("blah"));
-					// ...
-				}
-			} else {
-				throw new InvalidLoginException("Username or password is incorrect;");
+			while (rs.next()) {
+				auth = new Authorize();
+				auth.setUsername(rs.getString("userlan"));
+				auth.setUserFullname(rs.getString("userlan_name"));
+				auth.setUserRole(rs.getString("role_name"));
 			}
 
 			return auth;
 		} catch (Exception e) {
-
 			e.printStackTrace();
 		} finally {
 			rs.close();

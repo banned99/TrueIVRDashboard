@@ -51,7 +51,7 @@ public class ProjectDao {
 					if (rs.getDate("project_submit_date") != null)
 						project.setProjectRequestSubmitDate(
 								new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("project_submit_date")));
-					else project.setProjectRequestDate("");
+					else project.setProjectRequestSubmitDate("");
 					
 					if (rs.getDate("project_target_date") != null)
 						project.setProjectTargetDate(

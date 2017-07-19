@@ -32,11 +32,6 @@
 <!-- Custom Fonts -->
 <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-<!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
 </head>
 <body>
 	<div id="wrapper" class="in">
@@ -46,11 +41,9 @@
 			<div class="row">
 			<!-- /.dynamic timing -->
 				<div class="col-lg-12">
-					<div align=right>
-						<br><iframe
-							src="http://free.timeanddate.com/clock/i5skeguw/n28/tlth/fs12/fc777/tt0/tw0/tm3/td2/th2/tb1"
-							frameborder="0" width="136" height="16"></iframe>
-					</div>
+					<br>
+					<br>
+					<br>
 					<h3 class="page-header">Project Details</h3>
 				</div>
 				<!-- /.col-lg-12 -->
@@ -58,46 +51,31 @@
 				<div class="col-lg-12">
                     <div class="panel panel-success">
                         <div class="panel-heading">
-                        	${ project.projectName }
+                        	${ project.projectName } Project
                         </div>
                         
                         <div class="panel-body">
-                        	<div class="col-lg-4" align="right">
-                        		Project Name:<br>
-								Status:<br>
-								Access Channel:<br>
-								Priority:<br>
-								User Request Date:<br>
-								Submit Requirement Date:<br>
-								Target Date:<br>
-								Reason:<br>
-								Launch Date:<br>
-								UCR Date:<br>
-								UCR No:<br>
-								Requester:<br>	
-								Owner:<br>
-								Man-day:<br>
-								Detail:<br><br>
-								
-                        	</div>
-                        	
-                        	<div class="col-lg-8">
-                        	<!-- project detail from db -->
-                        		${ project.projectName }<br>
-								${ project.projectStatus }<br>
-								${ project.projectAccessChannel }<br>
-								${ project.projectPriority }<br>
-								${ project.projectRequestDate }<br>
-								${ project.projectRequestSubmitDate }<br>
-								${ project.projectTargetDate }<br>
-								${ project.projectReason }<br>
-								${ project.projectLaunchDate }<br>
-								${ project.projectUcrDate }<br>
-								${ project.projectUcrNo }<br>
-								${ project.projectRequester }<br>	
-								${ project.projectOwner }<br>
-								${ project.projectManday }<br>
-								${ project.projectDetails }<br><br>
+                        	<div class="col-lg-12" align="justify">
+                        		<span class="col-sm-3">Project Name: </span> ${ project.projectName }<br>
+								<span class="col-sm-3">Status: </span> ${ project.projectStatus }<br>
+								<span class="col-sm-3">Access Channel: </span> <c:forEach items="${ project.projectAccessChannel }" var="ac" varStatus="index">
+									<c:choose>
+										<c:when test="${ index.index == 0 }"> ${ ac }</c:when>
+										<c:when test="${ index.index > 0 }">, ${ ac }</c:when>
+									</c:choose>
+								</c:forEach><br>
+								<span class="col-sm-3">Priority: </span> ${ project.projectPriority }<br>
+								<span class="col-sm-3">User Request Date: </span> ${ project.projectRequestDate }<br>
+								<span class="col-sm-3">Submit Requirement Date: </span> ${ project.projectRequestSubmitDate }<br>
+								<span class="col-sm-3">Target Date: </span> ${ project.projectTargetDate }<br>
+								<span class="col-sm-3">Reason: </span>${ project.projectReason }<br>
+								<span class="col-sm-3">Launch Date: </span> ${ project.projectLaunchDate }<br>
+								<span class="col-sm-3">UCR Date: </span> ${ project.projectUcrDate }<br>
+								<span class="col-sm-3">UCR No: </span> ${ project.projectUcrNo }<br>
+								<span class="col-sm-3">Requester: </span> ${ project.projectRequester }<br>
+								<span class="col-sm-3">Owner: </span> ${ project.projectOwner }<br>
+								<span class="col-sm-3">Man-day: </span> ${ project.projectManday }<br>
+								<span class="col-sm-3">Detail: </span> ${ project.projectDetails }<br><br>
 								
                         	</div>
                         </div>
@@ -106,11 +84,17 @@
                         </div>
                     </div>
                 </div>
-	
-	
-
-			<br> <br>
-			<div class="row"></div>
+			<div class="row">
+			<!-- /.dynamic timing -->
+				<div class="col-lg-12">
+					<div align=right>
+						<br><iframe
+							src="http://free.timeanddate.com/clock/i5skeguw/n28/tlth/fs12/fc777/tt0/tw0/tm3/td2/th2/tb1"
+							frameborder="0" width="136" height="16"></iframe>
+					</div>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
 		</div>
 	</div>
 

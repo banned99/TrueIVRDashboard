@@ -113,29 +113,37 @@ public class ProjectServlet extends HttpServlet {
 		try {
 			DashboardService dashService = new DashboardService();
 			List<Project> projects = new ArrayList<Project>();
-			int perPage = Integer.parseInt(request.getParameter("perPage"));
-			int pageNo = Integer.parseInt(request.getParameter("pageNo"));
 			
 			String projectId = request.getParameter("projectId");
 			String projectName = request.getParameter("projectName");
 			String projectStatus = request.getParameter("projectStatus");
-			String projectAC = request.getParameter("projectAC");
 			String projectPriority = request.getParameter("projectPriority");
-			String projectStartDate = request.getParameter("projectStartDate");
-			String projectTargetDate = request.getParameter("projectTargetDate");
-			String projectLaunchDate = request.getParameter("projectLaunchDate");
+			String projectSubmitDateStart = request.getParameter("projectSubmitDateStart");
+			String projectSubmitDateEnd = request.getParameter("projectSubmitDateEnd");
+			String projectTargetDateStart = request.getParameter("projectTargetDateStart");
+			String projectTargetDateEnd = request.getParameter("projectTargetDateEnd");
+			
+			if(projectSubmitDateStart.equals("01/01/2017") && projectSubmitDateEnd.equals("01/01/2017")){
+				projectSubmitDateStart = null;
+				projectSubmitDateEnd = null;
+			}
+			
+			if(projectTargetDateStart.equals("01/01/2017") && projectTargetDateEnd.equals("01/01/2017")){
+				projectTargetDateStart = null;
+				projectTargetDateEnd = null;
+			}
 			
 			ProjectCriteria crit = new ProjectCriteria();
 			crit.setProjectId(projectId);
 			crit.setProjectName(projectName);
 			crit.setProjectStatus(projectStatus);
 			crit.setProjectPriority(projectPriority);
-			crit.setProjectAccessChannel(projectAC);
-			crit.setProjectStartDate(projectStartDate);
-			crit.setProjectTargetDate(projectTargetDate);
-			crit.setProjectLaunchDate(projectLaunchDate);
+			crit.setProjectSubmitDateStart(projectSubmitDateStart);
+			crit.setProjectSubmitDateEnd(projectSubmitDateEnd);
+			crit.setProjectTargetDateStart(projectTargetDateStart);
+			crit.setProjectTargetDateEnd(projectTargetDateEnd);
 			
-			projects = dashService.projectSearch(crit, pageNo, perPage);
+			projects = dashService.projectSearch(crit);
 			
 			Gson gson = new Gson();
             JsonElement element = gson.toJsonTree(projects, new TypeToken<List<Project>>(){}.getType());
@@ -157,8 +165,9 @@ public class ProjectServlet extends HttpServlet {
 			
 			int perPage = Integer.parseInt(request.getParameter("perPage"));
 			int pageNo = Integer.parseInt(request.getParameter("pageNo"));
+			int max = Integer.parseInt(request.getParameter("max"));
 			
-			projects = dashService.getAllProj(perPage, pageNo);
+			projects = dashService.getAllProj(perPage, pageNo, max);
 			
 			Gson gson = new Gson();
             JsonElement element = gson.toJsonTree(projects, new TypeToken<List<Project>>(){}.getType());

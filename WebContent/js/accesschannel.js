@@ -41,7 +41,8 @@ $(document).ready(function () {
 			});
 			pageMax = Math.ceil(channelCount / perPage);
 			checkPageMaxMin();
-			$('#curPage').val(1+"/"+pageMax);
+			$('#curPage').val(pageNo);
+			$('#maxPage').text("/ "+pageMax);
 		})
 	})
 	
@@ -71,7 +72,8 @@ $(document).ready(function () {
 			});
 			pageMax = Math.ceil(channelCount / perPage);
 			checkPageMaxMin();
-			$('#curPage').val(1+"/"+pageMax);
+			$('#curPage').val(pageNo);
+			$('#maxPage').text("/ "+pageMax);
 		});
 	});
 	
@@ -99,7 +101,8 @@ $(document).ready(function () {
 						);
 			});
 			checkPageMaxMin();
-			$('#curPage').val(pageNo+"/"+pageMax);
+			$('#curPage').val(pageNo);
+			$('#maxPage').text("/ "+pageMax);
 		});
 	});
 	
@@ -127,7 +130,8 @@ $(document).ready(function () {
 						);
 			});
 			checkPageMaxMin();
-			$('#curPage').val(pageNo+"/"+pageMax);
+			$('#curPage').val(pageNo);
+			$('#maxPage').text("/ "+pageMax);
 		});
 	});
 	
@@ -156,9 +160,8 @@ $(document).ready(function () {
 				action: "acSearch",
 				perPage : perPage,
 				pageNo: pageNo,
-				acId: $('#searchAcId').val(),
-				acName: $('#searchAcName').val(),
-				acProductNo: $('#searchProductNo').val(),
+				acNo: $('#searchId').val(),
+				acName: $('#searchAC').val(),
 				acProductName: $('#searchProductName').val(),
 				acDisplay: $('#searchDisplay').val()
 			}
@@ -175,8 +178,50 @@ $(document).ready(function () {
 						);
 			});
 			checkPageMaxMin();
-			$('#curPage').val(pageNo+"/"+pageMax);
+			$('#curPage').val(pageNo);
+			$('#maxPage').text("/ "+pageMax);
 		})
 	});
 	
+	$('#clearButt').click(function () {
+		$('#searchId').val("");
+		$('#searchName').val("");
+		$('#searchProductName').val("");
+		$('#searchDisplay').val("");
+		pageNo = 1;
+		
+		pageMax = 1;
+		pageMin = 1;
+		$('#nextPage').prop("disabled", false);
+		$('#prevPage').prop("disabled", false);
+		$('#perPage').prop("disabled", false);
+		$.ajax({
+			type: "GET",
+			url: "AccessChannelServlet",
+			contentType: "application/json",
+			data: {
+				perPage: perPage,
+				pageNo: pageNo,
+				action: "viewAll"
+			}
+		}).then(function(data, status, jqxhr){
+			$.each(data, function( index, value ){
+				$('tbody').empty();
+				$.each(data, function( index, value ){
+					$("tbody").append(
+							"<tr>" +
+							"	<td>" + value.acNo + "</td>" +
+							"	<td>" + value.acName + "</td>" +
+							"	<td>" + value.productName + "</td>" +
+							"	<td>" + value.display +"</td>" +
+							"</tr>"
+							);
+				});
+			});
+			pageMax = Math.ceil(channelCount / perPage);
+			checkPageMaxMin();
+			$('#curPage').val(pageNo);
+			$('#maxPage').text("/ "+pageMax);
+		});
+	})
 })
