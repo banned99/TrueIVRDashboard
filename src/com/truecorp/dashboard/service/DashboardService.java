@@ -36,4 +36,24 @@ public class DashboardService {
 	public Statistic getStatistic(String year1, String year2) throws SQLException {
 		return DashboardDao.getStatistics(year1, year2);
 	}
+
+	public List<Project> getMyProjects(String username) throws SQLException {
+		return DashboardDao.getMyProject(username);
+	}
+	
+	public Integer getMyProjectCount(String username) throws SQLException {
+		return DashboardDao.getMyStatistics(username).getTotal_projects();
+	}
+
+	public Statistic getMyStatistic(String username) throws SQLException {
+		return DashboardDao.getMyStatistics(username);
+	}
+
+	public Statistic getMyStatistic(String username, String year1) throws SQLException {
+		return DashboardDao.getMyStatistics(username, year1);
+	}
+
+	public Statistic getMyStatistic(String username, String year1, String year2) throws SQLException {
+		return DashboardDao.getMyStatistics(username, year1, year2);
+	}
 }

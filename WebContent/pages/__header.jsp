@@ -6,8 +6,7 @@
 	<nav class="navbar navbar-default navbar-static-top navbar-fixed-top" role="navigation"
 			style="margin-bottom: 0">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="HomeServlet?action=view">True IVR
-					Dashboard</a>
+			<a href="HomeServlet?action=view"><img src="img/trueicon3.png" /></a>
 		</div>
 		<!-- /.navbar-header -->
 
@@ -31,6 +30,7 @@
 		<div class="navbar-default sidebar" >
 			<div class="sidebar-nav navbar-collapse collapse">
 				<ul class="nav in" id="side-menu">
+					<li><a href="HomeServlet?action=view">Dashboard</a></li>
 					<li><a href="ProjectServlet?action=view">Projects</a></li>
 					<li><a href="AccessChannelServlet?action=view">Access Channel</a></li>
 				</ul>

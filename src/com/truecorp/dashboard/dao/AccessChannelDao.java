@@ -141,7 +141,6 @@ public class AccessChannelDao {
 				ac = new AccessChannel();
 				ac.setAcNo(rs.getString("ac_no"));
 				ac.setAcName(rs.getString("ac_name"));
-				ac.setProductNo(rs.getString("ac_product_no"));
 				ac.setProductName(rs.getString("ac_product_name"));
 				ac.setDisplay(rs.getString("project_display"));
 				acList.add(ac);

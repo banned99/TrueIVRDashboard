@@ -18,6 +18,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.truecorp.dashboard.model.Authorize;
 import com.truecorp.dashboard.model.Project;
 import com.truecorp.dashboard.model.Statistic;
 import com.truecorp.dashboard.service.DashboardService;
@@ -60,6 +61,9 @@ public class HomeServlet<E> extends HttpServlet {
 		String action = request.getParameter("action");
 		try {
 			switch (action) {
+			case "viewMyStats":
+				viewMyStat(request, response);
+				break;
 			case "viewMostPrioProject":
 				viewMostPriority(request, response);
 				break;
@@ -117,7 +121,6 @@ public class HomeServlet<E> extends HttpServlet {
 			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().print(jsonArray);
 		} catch (JsonSyntaxException | JsonIOException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -136,9 +139,32 @@ public class HomeServlet<E> extends HttpServlet {
 			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().print(jsonArray);
 		} catch (JsonSyntaxException | JsonIOException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private void viewMyStat(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+		DashboardService ds = new DashboardService();
+		
+		String year1 = request.getParameter("year1");
+		String year2 = request.getParameter("year2");
+		Authorize auth = (Authorize) request.getSession().getAttribute("user");
+		String username = auth.getUsername();
+		Statistic stat = null;
+		
+		if (year1 == null && year2 == null) {
+			stat = ds.getMyStatistic(username);
+		} else if (year1 != null && year2 == null) {
+			stat = ds.getMyStatistic(username, year1);
+		} else {
+			stat = ds.getMyStatistic(username, year1, year2);
+		}
+		
+		
+		String json = new Gson().toJson(stat);
+	    response.setContentType("application/json");
+	    response.setCharacterEncoding("UTF-8");
+	    response.getWriter().write(json);
 	}
 	
 	private void getTotalProjects(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {

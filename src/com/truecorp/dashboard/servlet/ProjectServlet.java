@@ -3,18 +3,20 @@ package com.truecorp.dashboard.servlet;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.truecorp.dashboard.criteria.ProjectCriteria;
@@ -54,6 +56,12 @@ public class ProjectServlet extends HttpServlet {
 			String action = request.getParameter("action");
 				
 			switch (action) {
+			case "viewMyProjectCount":
+				countMyProject(request, response);
+				break;
+			case "viewMyProject":
+				viewMyProject(request, response);
+				break;
 			case "viewProjectById":
 				viewProjectById(request, response);
 				break;
@@ -63,31 +71,42 @@ public class ProjectServlet extends HttpServlet {
 			case "projectSearch":
 				searchProject(request, response);
 				break;
-			case "viewProject":
-				viewProject(request, response);
-				break;
 			case "view":
 				request.getRequestDispatcher("pages/project.jsp").forward(request, response);
 				break;
 			}
 		} catch (JsonSyntaxException | JsonIOException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	private void viewProject(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String projectId = request.getParameter("project_id");
+
+	private void countMyProject(HttpServletRequest request, HttpServletResponse response) throws SQLException, JsonIOException, IOException {
+		HttpSession session = request.getSession();
+		String username = session.getAttribute("username").toString();
 		
-		ProjectService projService = new ProjectService();
-		Project proj = projService.getProjectById(projectId);
+		DashboardService ds = new DashboardService();
+		
+		Map<String, Integer> respond = new HashMap<String, Integer>();
+		respond.put("my_total_projects", ds.getMyProjectCount(username));
+		
+		new Gson().toJson(respond, response.getWriter());
+	}
+
+	private void viewMyProject(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+		HttpSession session = request.getSession();
+		String username = session.getAttribute("username").toString();
+		
+		System.out.println(username);
+		
+		DashboardService dashService = new DashboardService();
+		List<Project> projs = dashService.getMyProjects(username);
 		
 		Gson gson = new Gson();
-        JsonElement element = gson.toJsonTree(proj, new TypeToken<Project>(){}.getType());
-        JsonArray jsonArray = element.getAsJsonArray();
-        
-        response.setContentType("application/json; charset=utf-8");
-        response.getWriter().print(jsonArray);
+		JsonElement element = gson.toJsonTree(projs, new TypeToken<List<Project>>(){}.getType());
+		JsonArray jsonArray = element.getAsJsonArray();
+		
+		response.setContentType("application/json; charset=utf-8");
+		response.getWriter().print(jsonArray);
 	}
 
 	private void searchProject(HttpServletRequest request, HttpServletResponse response) {
@@ -96,7 +115,6 @@ public class ProjectServlet extends HttpServlet {
 			List<Project> projects = new ArrayList<Project>();
 			int perPage = Integer.parseInt(request.getParameter("perPage"));
 			int pageNo = Integer.parseInt(request.getParameter("pageNo"));
-			
 			
 			String projectId = request.getParameter("projectId");
 			String projectName = request.getParameter("projectName");
@@ -126,7 +144,6 @@ public class ProjectServlet extends HttpServlet {
             response.setContentType("application/json; charset=utf-8");
             response.getWriter().print(jsonArray);
 		} catch (JsonSyntaxException | JsonIOException | IOException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -161,12 +178,8 @@ public class ProjectServlet extends HttpServlet {
 			
 			Project project = pjs.getProjectById(project_id);
 			
-			Gson gson = new Gson();
-			JsonElement element = gson.toJsonTree(project, new TypeToken<Project>(){}.getType());
-			JsonObject json = element.getAsJsonObject();
-			
-			response.setContentType("application/json; charset=utf-8");
-            response.getWriter().print(json);
+			request.setAttribute("project", project);
+			request.getRequestDispatcher("pages/detail.jsp").forward(request, response);
 		} catch (Exception e){
 			e.printStackTrace();
 		}

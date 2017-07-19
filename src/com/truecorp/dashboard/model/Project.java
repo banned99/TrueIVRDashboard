@@ -1,6 +1,7 @@
 package com.truecorp.dashboard.model;
 
 import java.sql.Blob;
+import java.util.List;
 
 public class Project {
 
@@ -17,11 +18,12 @@ public class Project {
 	private String projectUcrNo;
 	private String projectUcrDate;
 	private String projectRequester;
-	private String projectAccessChannel;
+	private List<String> projectAccessChannel;
 	private String projectManday;
 	private String projectDetails;
 	private String projectLastComment;
 	private String projectUserlan;
+	private String projectTracked;
 	private Blob projectFile;
 
 	public int getProjectId() {
@@ -48,11 +50,11 @@ public class Project {
 		this.projectStatus = projectStatus;
 	}
 
-	public String getProjectAccessChannel() {
+	public List<String> getProjectAccessChannel() {
 		return projectAccessChannel;
 	}
 
-	public void setProjectAccessChannel(String projectAccessChannel) {
+	public void setProjectAccessChannel(List<String> projectAccessChannel) {
 		this.projectAccessChannel = projectAccessChannel;
 	}
 
@@ -174,6 +176,14 @@ public class Project {
 
 	public void setProjectUserlan(String projectUserlan) {
 		this.projectUserlan = projectUserlan;
+	}
+
+	public String getProjectTracked() {
+		return projectTracked;
+	}
+
+	public void setProjectTracked(String projectTracked) {
+		this.projectTracked = projectTracked;
 	}
 
 }

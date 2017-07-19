@@ -32,22 +32,24 @@ $(document).ready(function() {
 				}
 			}).then(function(data, status, jqxhr){
 				$.each(data, function( index, value ){
-					$("tbody").append(
+					$("#data").append(
 							"<tr>" +
-							"	<td>" + value.projectId + "</td>" +
-							"	<td>" + value.projectName + "</td>" +
+							"	<td>" + (index+1) + "</td>" +
+							"	<td><a href='ProjectServlet?action=viewProjectById&project_id="+value.projectId+"'>" + value.projectName + "</td>" +
+							"	<td>" + value.projectOwner + "</td>" +
+							"	<td>" + value.projectRequester + "</td>" +
 							"	<td>" + value.projectStatus + "</td>" +
-							"	<td>" + value.projectAccessChannel + "</td>" +
 							"	<td>" + value.projectPriority + "</td>" +
+							"	<td>" + value.projectAccessChannel + "</td>" +
+							"	<td>" + value.projectRequestSubmitDate + "</td>"+
 							"	<td>" + value.projectTargetDate + "</td>" +
-							"	<td>" + value.projectLaunchDate + "</td>" +
-							"	<td> File </td>" +
 							"</tr>"
-					); // ADD FILE LATER
+					);
 				});
 				pageMax = Math.ceil(projectCount / perPage);
 				checkPageMaxMin();
-				$('#curPage').val(1+"/"+pageMax);
+				$('#curPage').val(pageNo);
+				$('#maxPage').text("/ "+pageMax);
 			});
 	});
 	
@@ -64,23 +66,25 @@ $(document).ready(function() {
 				pageNo: pageNo
 			}
 		}).then(function(data, status, jqxhr) {
-			$('tbody').empty();
+			$('#data').empty();
 			$.each(data, function( index, value ){
-				$("tbody").append(
+				$("#data").append(
 						"<tr>" +
-						"	<td>" + value.projectId + "</td>" +
-						"	<td>" + value.projectName + "</td>" +
+						"	<td>" + (index+1) + "</td>" +
+						"	<td><a href='ProjectServlet?action=viewProjectById&project_id="+value.projectId+"'>" + value.projectName + "</td>" +
+						"	<td>" + value.projectOwner + "</td>" +
+						"	<td>" + value.projectRequester + "</td>" +
 						"	<td>" + value.projectStatus + "</td>" +
-						"	<td>" + value.projectAccessChannel + "</td>" +
 						"	<td>" + value.projectPriority + "</td>" +
+						"	<td>" + value.projectAccessChannel + "</td>" +
+						"	<td>" + value.projectRequestSubmitDate + "</td>"+
 						"	<td>" + value.projectTargetDate + "</td>" +
-						"	<td>" + value.projectLaunchDate + "</td>" +
-						"	<td> File </td>" +
-						"</tr>"); // ADD FILE LATER
+						"</tr>"); 
 			});
 			pageMax = Math.ceil(projectCount / perPage);
 			checkPageMaxMin();
-			$('#curPage').val(1+"/"+pageMax);
+			$('#curPage').val(pageNo);
+			$('#maxPage').text("/ "+pageMax);
 		});
 	});
 	
@@ -96,22 +100,24 @@ $(document).ready(function() {
 				pageNo: pageNo
 			}
 		}).then(function(data, status, jqxhr) {
-			$('tbody').empty();
+			$('#data').empty();
 			$.each(data, function( index, value ){
-				$("tbody").append(
+				$("#data").append(
 						"<tr>" +
-						"	<td>" + value.projectId + "</td>" +
-						"	<td>" + value.projectName + "</td>" +
+						"	<td>" + (index+1) + "</td>" +
+						"	<td><a href='ProjectServlet?action=viewProjectById&project_id="+value.projectId+"'>" + value.projectName + "</td>" +
+						"	<td>" + value.projectOwner + "</td>" +
+						"	<td>" + value.projectRequester + "</td>" +
 						"	<td>" + value.projectStatus + "</td>" +
-						"	<td>" + value.projectAccessChannel + "</td>" +
 						"	<td>" + value.projectPriority + "</td>" +
+						"	<td>" + value.projectAccessChannel + "</td>" +
+						"	<td>" + value.projectRequestSubmitDate + "</td>"+
 						"	<td>" + value.projectTargetDate + "</td>" +
-						"	<td>" + value.projectLaunchDate + "</td>" +
-						"	<td> File </td>" +
-						"</tr>"); // ADD FILE LATER
+						"</tr>");
 			});
 			checkPageMaxMin();
-			$('#curPage').val(pageNo+"/"+pageMax);
+			$('#curPage').val(pageNo);
+			$('#maxPage').text("/ "+pageMax);
 		});
 	});
 	
@@ -127,22 +133,24 @@ $(document).ready(function() {
 				pageNo: pageNo
 			}
 		}).then(function(data, status, jqxhr) {
-			$('tbody').empty();
+			$('#data').empty();
 			$.each(data, function( index, value ){
-				$("tbody").append(
+				$("#data").append(
 						"<tr>" +
-						"	<td>" + value.projectId + "</td>" +
-						"	<td>" + value.projectName + "</td>" +
+						"	<td>" + (index+1) + "</td>" +
+						"	<td><a href='ProjectServlet?action=viewProjectById&project_id="+value.projectId+"'>" + value.projectName + "</td>" +
+						"	<td>" + value.projectOwner + "</td>" +
+						"	<td>" + value.projectRequester + "</td>" +
 						"	<td>" + value.projectStatus + "</td>" +
-						"	<td>" + value.projectAccessChannel + "</td>" +
 						"	<td>" + value.projectPriority + "</td>" +
+						"	<td>" + value.projectAccessChannel + "</td>" +
+						"	<td>" + value.projectRequestSubmitDate + "</td>"+
 						"	<td>" + value.projectTargetDate + "</td>" +
-						"	<td>" + value.projectLaunchDate + "</td>" +
-						"	<td> File </td>" +
-						"</tr>"); // ADD FILE LATER
+						"</tr>");
 			});
 			checkPageMaxMin();
-			$('#curPage').val(pageNo+"/"+pageMax);
+			$('#curPage').val(pageNo);
+			$('#maxPage').text("/ "+pageMax);
 		});
 	});
 	
@@ -163,41 +171,60 @@ $(document).ready(function() {
 	}
 	
 	$('#searchButt').click(function () {
+		var projectId = $('#searchId').val();
+		var projectName = $('#searchName').val();
+		var projectOwner = $('#searchOwner').val();
+		var projectRequester = $('#searchRequester').val();
+	 	var projectStatus = $('#searchStatus').val();
+		var projectPriority = $('#searchPrio').val();
+	 	var projectSubmitDateStart = $('#searchSubmit').val().substr(0,9);
+	 	var projectSubmitDateEnd = $('#searchSubmit').val().substr(13,9);
+	 	var projectTargetDateStart = $('#searchTarget').val().substr(0,9);
+	 	var projectTargetDateEnd = $('#searchTarget').val().substr(13,9);
+	 	if (projectId === null && projectName === null && projectOwner === null && projectRequester === null && projectPriority === null && 
+	 			projectStatus === null && projectTargetDateStart === '01/01/2017' && projectSubmitDateStart === '01/01/2017' && 
+	 			projectTargetDateEnd === '01/01/2017' && projectSubmitDateEnd === '01/01/2017')
+	 		var action = "viewAllProject";
+	 	else var action = "projectSearch";
 		$.ajax({
 			type: "GET",
 			url: "ProjectServlet",
 			contentType: "application/json",
 			data: {
-				action: "projectSearch",
+				action: action,
 				perPage : perPage,
 				pageNo: pageNo,
-				projectId: $('#searchId').val(),
-				projectName: $('#searchName').val(),
-				projectStatus: $('#searchStatus').val(),
-				projectAC: $('#searchAC').val(),
-				projectPriority: $('#searchPrio').val(),
-			 	projectStartDate: $('#searchStart').val(),
-			 	projectTargetDate: $('#searchTarget').val(),
-			 	projectLaunchDate: $('#searchLaunch').val()
+				projectId: projectId,
+				projectName: projectName,
+				projectOwner: projectOwner,
+				projectRequester: projectRequester,
+				projectPriority: projectPriority,
+			 	projectStatus: projectStatus,
+			 	projectTargetDateStart: projectTargetDateStart,
+			 	projectTargetDateEnd: projectTargetDateEnd,
+			 	projectSubmitDateStart: projectSubmitDateStart,
+			 	projectSubmitDateEnd: projectSubmitDateEnd
 			}
 		}).then(function(data, status, jqxhr){
-			$('tbody').empty();
+			$('#data').empty();
 			$.each(data, function( index, value ){
-				$("tbody").append(
+				$("#data").append(
 						"<tr>" +
-						"	<td>" + value.projectId + "</td>" +
-						"	<td>" + value.projectName + "</td>" +
+						"	<td>" + (index+1) + "</td>" +
+						"	<td><a href='ProjectServlet?action=viewProjectById&project_id="+value.projectId+"'>" + value.projectName + "</td>" +
+						"	<td>" + value.projectOwner + "</td>" +
+						"	<td>" + value.projectRequester + "</td>" +
 						"	<td>" + value.projectStatus + "</td>" +
-						"	<td>" + value.projectAccessChannel + "</td>" +
 						"	<td>" + value.projectPriority + "</td>" +
+						"	<td>" + value.projectAccessChannel + "</td>" +
+						"	<td>" + value.projectRequestSubmitDate + "</td>"+
 						"	<td>" + value.projectTargetDate + "</td>" +
-						"	<td>" + value.projectLaunchDate + "</td>" +
-						"	<td> File </td>" +
-						"</tr>"); // ADD FILE LATER
+						"</tr>");
 			});
 			pageMax=1;
 			checkPageMaxMin();
-			$('#curPage').val(pageNo+"/"+pageMax);
-		})
+			$('#curPage').val(pageNo);
+			$('#maxPage').text("/ "+pageMax);
+		});
 	});
 });

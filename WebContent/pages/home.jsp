@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-
+<%@ include file="session.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -38,62 +38,10 @@
 <!-- Custom Fonts -->
 <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-<!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
 <!-- donut chart -->
-<script type="text/javascript"
-	src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-	google.charts.load("current", {
-		packages : [ "corechart" ]
-	});
-	google.charts.setOnLoadCallback(drawChart);
-	function drawChart() {
-		var data = google.visualization.arrayToDataTable([
-				[ 'Task', 'Hours per Day' ], [ 'Work', 11 ], [ 'Eat', 2 ],
-				[ 'Commute', 2 ], [ 'Watch TV', 2 ], [ 'Sleep', 7 ] ]);
-
-		var options = {
-			title : 'The summary of project statuses',
-			pieHole : 0.4,
-		};
-
-		var chart = new google.visualization.PieChart(document
-				.getElementById('donutchart'));
-		chart.draw(data, options);
-	}
-</script>
-
-<!-- bar chart -->
-<script type="text/javascript">
-	google.charts.load('current', {
-		'packages' : [ 'bar' ]
-	});
-	google.charts.setOnLoadCallback(drawChart);
-
-	function drawChart() {
-		var data = google.visualization.arrayToDataTable([
-				[ 'Year', 'Completed', 'Pending', 'Cancel' ],
-				[ '2014', 1000, 400, 200 ], [ '2015', 1170, 460, 250 ],
-				[ '2016', 660, 1120, 300 ], [ '2017', 1030, 540, 350 ] ]);
-
-		var options = {
-			chart : {
-				title : 'Projects',
-				subtitle : 'Projects Status: 2014-2017',
-			},
-			bars : 'horizontal' // Required for Material Bar Charts.
-		};
-
-		var chart = new google.charts.Bar(document
-				.getElementById('barchart_material'));
-
-		chart.draw(data, google.charts.Bar.convertOptions(options));
-	}
-</script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	
+<script type="text/javascript" src="js/googleChart.js"></script>
 </head>
 <body>
 	<div id="wrapper" class="in">
@@ -124,7 +72,7 @@
 			
 					<div class="col-lg-5">
 						<div class="panel panel-default">
-							<div class="panel-heading">Donut Chart Example</div>
+							<div class="panel-heading">My Performance</div>
 							<!-- /.panel-heading -->
 							<div id="donutchart" style="width: 350px; height: 400px;"></div>
 						</div>
@@ -222,7 +170,6 @@
 													<th>Request Date</th>
 													<th>Submit Date</th>
 													<th>Target Date</th>
-													<th>Reference File</th>
 												</tr>
 											</thead>
 											<tbody id="mostrecent">

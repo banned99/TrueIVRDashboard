@@ -6,8 +6,9 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>This is Home</title>
 	
+	<title>Project List</title>
+
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	
@@ -21,56 +22,207 @@
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
+	<!-- Custom Fonts -->
+	<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	
+	<!-- MetisMenu CSS -->
+	<link href="css/metisMenu.min.css" rel="stylesheet" type="text/css">
+	
+	<!-- DataTables CSS -->
+	<link href="css/dataTables.bootstrap.css" rel="stylesheet"
+	type="text/css">
+
+	<!-- DataTables Responsive CSS -->
+	<link href="css/dataTables.responsive.css" rel="stylesheet"
+	type="text/css">
+	
+	<!-- Search -->
+	<script src="http://momentjs.com/downloads/moment-with-locales.js"></script>
+	<script src="http://momentjs.com/downloads/moment-timezone-with-data.js"></script>
+	    
+	<!-- Include Required Prerequisites -->
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/moment.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/3/css/bootstrap.css" />
+	 
+	<!-- Include Date Range Picker -->
+	<script type="text/javascript" src="js/daterangepicker.js"></script>
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
+	<script type="text/javascript">
+	$(function() {
+	    $('input[name="daterange"]').daterangepicker({
+	        timePicker: true,
+	        timePickerIncrement: 30,
+	        locale: {
+	            format: 'MM/DD/YYYY'
+	        }
+	    });
+	});
+	</script>
 </head>
 <body>
-	<%--@ include file="__header.jsp" --%>
 	<div id="wrapper" class="in">
-		<div>
-			<input type="text" id="searchId" width="12%" />
-			<input type="text" id="searchName" width="12%" />
-			<input type="text" id="searchStatus" width="12%" />
-			<input type="text" id="searchPrio" width="12%" />
-			<input type="text" id="searchAC" width="12%" />
-			<input type="date" id="searchStart" width="12%" />
-			<input type="date" id="searchTarget" width="12%" />
-			<input type="date" id="searchLaunch" width="12%" />
-			<button type="submit" id="searchButt"> Search </button>
-		</div>
-		<div>
-			<div style="float: left;">
-				<select id="perPage">
-					<option value="1" >1</option>
-					<option value="10" >10</option>
-					<option value="20" selected="selected">20</option>
-					<option value="50" >50</option>
-					<option value="100" >100</option>
-				</select>
+		<%@ include file="__header.jsp"%>
+		<div id="page-wrapper" style="min-height: 537px;">
+			<div class="row">
+				<!-- /.dynamic timing -->
+				<div class="col-lg-12">
+					<div align=right>
+						<br> <br> <br> <br>
+						<iframe
+							src="http://free.timeanddate.com/clock/i5skeguw/n28/tlth/fs12/fc777/tt0/tw0/tm3/td2/th2/tb1"
+							frameborder="0" width="136" height="16"> </iframe>
+					</div>
+					<h3 class="page-header">Project List</h3>
+				</div>
+				<!-- /.col-lg-12 -->
 			</div>
-			<div style="float: right;">
-				<button id="prevPage" > Previous </button>
-				<input type="text" id="curPage" readonly="readonly" value="1/1"/>
-				<button id="nextPage" > Next </button>
+
+			<!-- search -->
+			<div id="panel-header" style="min-height: 100px;"> 
+			<!-- <label style="margin-left:35px; margin-bottom: 10px;">Search</label> -->
+				<div class="col-lg-12">
+						<div id="dataTables-example_filter" class="dataTables_filter" style="height: 50px;">
+							<label>
+							<div class="col-sm-1">
+								<input id="searchId" type="text"
+								class="form-control input-sm" placeholder="No."
+								aria-controls="dataTables-example">
+							</div>
+							<div class="col-sm-3">
+								<input id="searchName" type="text"
+								class="form-control input-sm" placeholder="Project Name"
+								aria-controls="dataTables-example" >
+							</div>
+							<div class="col-sm-2">
+								<input id="searchOwner" type="text"
+								class="form-control input-sm" placeholder="Owner"
+								aria-controls="dataTables-example">
+							</div>
+							<div class="col-sm-2">
+								<input id="searchRequester" type="text"
+								class="form-control input-sm" placeholder="Requester"
+								aria-controls="dataTables-example">
+							</div>
+							<div class="col-sm-2">
+								<input id="searchStatus" type="text"
+								class="form-control input-sm" placeholder="Status"
+								aria-controls="dataTables-example" >
+							</div>
+							<div class="col-sm-2">
+								<input id="searchPrio" type="text"
+								class="form-control input-sm" placeholder="Priority"
+								aria-controls="dataTables-example">
+							</div>
+						</div>
+				</div>
+				
+
+				
+				<div class="col-lg-12">
+					<div class="dataTables-example_filter">
+						<label style="margin-left:20px;">Submit Date:</label>
+						<label style="margin-left:10px;">
+							<input id="searchSubmit" type="text" name="daterange" value="01/01/2017 - 01/01/2017" 
+								class="form-control input-sm" />
+						</label>
+						<label style="margin-left:20px">Target Date:</label>
+						<label style="margin-left:10px;">
+							<input id="searchTarget" type="text" name="daterange" value="01/01/2017 - 01/01/2017" 
+								class="form-control input-sm" />
+						</label>
+						<label><button id="searchButton" class="btn btn-info" style="margin-left: 10px;" type="submit" >Search</button></label>
+					</div>
+				</div>
 			</div>
-			<table>
-				<thead>
-					<tr>
-						<th width="2.5%"></th>
-						<th width="5%">Project ID</th>
-						<th width="20%">Project Name</th>
-						<th width="10%">Project Status</th>
-						<th width="15%">Project Access Channel</th>
-						<th width="5%">Project Priority</th>
-						<th width="12.5%">Project Start Date</th>
-						<th width="12.5%">Project Target Date</th>
-						<th width="12.5%">Project Launch Date</th>
-						<th width="5%">Project File</th>
-						<th width="2.5%"></th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>	
-			</table>
+		<div class="col-sm-15">
+			<div class="panel panel-warning">
+				<table width="100%"
+					class="table table-bordered table-hover dataTable no-footer dtr-inline"
+					id="dataTables-example" role="grid"
+					aria-describedby="dataTables-example_info" style="width: 100%;">
+					<thead>
+						<tr role="row">
+							<th class="sorting_asc" tabindex="0"
+								aria-controls="dataTables-example" rowspan="1" colspan="1"
+								aria-label="Rendering engine: activate to sort column descending"
+								style="width: 1%;" aria-sort="ascending"><center>No.</center></th>
+							<th class="sorting_asc" tabindex="0"
+								aria-controls="dataTables-example" rowspan="1" colspan="1"
+								aria-label="Rendering engine: activate to sort column descending"
+								style="width: 20%;" aria-sort="ascending"><center>Project Name</center></th>
+							<th class="sorting" tabindex="0"
+								aria-controls="dataTables-example" rowspan="1" colspan="1"
+								aria-label="Browser: activate to sort column ascending"
+								style="width: 7%;"><center>Owner</center></th>
+							<th class="sorting" tabindex="0"
+								aria-controls="dataTables-example" rowspan="1" colspan="1"
+								aria-label="Browser: activate to sort column ascending"
+								style="width: 5%;"><center>Requester</center></th>
+							<th class="sorting" tabindex="0"
+								aria-controls="dataTables-example" rowspan="1" colspan="1"
+								aria-label="Browser: activate to sort column ascending"
+								style="width: 5%;"><center>Status</center></th>
+							<th class="sorting" tabindex="0"
+								aria-controls="dataTables-example" rowspan="1" colspan="1"
+								aria-label="Platform(s): activate to sort column ascending"
+								style="width: 5%;"><center>Priority</center></th>
+								<th class="sorting" tabindex="0"
+								aria-controls="dataTables-example" rowspan="1" colspan="1"
+								aria-label="Platform(s): activate to sort column ascending"
+								style="width: 5%;"><center>Access Channel</center></th>
+							<th class="sorting" tabindex="0"
+								aria-controls="dataTables-example" rowspan="1" colspan="1"
+								aria-label="Platform(s): activate to sort column ascending"
+								style="width: 10%;"><center>Submit Date</center></th>
+							<th class="sorting" tabindex="0"
+								aria-controls="dataTables-example" rowspan="1" colspan="1"
+								aria-label="Platform(s): activate to sort column ascending"
+								style="width: 7%;"><center>Target Date</center></th>
+							<th class="sorting" tabindex="0"
+								aria-controls="dataTables-example" rowspan="1" colspan="1"
+								aria-label="Platform(s): activate to sort column ascending"
+								style="width: 1%;"><center>File</center></th>
+						</tr>
+					</thead>
+					<tbody id="data" align="center">
+					</tbody>
+				</table>
+				<br>
+			</div>
+			<div>
+					<div style="float: left; vertical-align: middle;">
+					<select id="perPage">
+						<option value="1" >1</option>
+						<option value="10" >10</option>
+						<option value="20" selected="selected">20</option>
+						<option value="50" >50</option>
+						<option value="100" >100</option>
+					</select>
+					</div>
+					<div style="float: right;">
+						<button class="btn btn-outline btn-info" id="prevPage" type="button">Previous</button>
+							<input type="text" id="curPage" 
+								 value="1" style="width: 10%;"/>
+							<span id='maxPage'>/ 1</span>
+						<button class="btn btn-outline btn-info" id="nextPage" type="button">Next</button>
+					</div>
+				</div>
 		</div>
+		<br> <br>
+		<div class="row"></div>
 	</div>
+	</div>
+
+	<script src="js/sb-admin-2.js"></script>
+	
+	<!-- Metis Menu Plugin JavaScript -->
+	<script src="js/metisMenu.min.js"></script>
+	
+	<script src="js/dataTables.bootstrap.min.js"></script>
+	
+	<script src="js/dataTables.responsive.js"></script>
+
 </body>
 </html>
